@@ -1,0 +1,13 @@
+{
+    "name": "polev/phpole",
+    "description": "A few usefull functions.",
+    "autoload": {
+        "classmap": [""]
+    },
+    "authors": [
+        {
+            "name": "polev",
+            "email": "polevong@live.com"
+        }
+    ]
+}
