@@ -73,6 +73,24 @@ class PStorage
 				'url'=>$this->getUrl(),
 		);
 	}
+	
+	function putFile($localfile, $filename)
+	{
+		$d = pathinfo($filename);
+		$this->name = $d['filename'];
+		$this->ext = $d['extension'];
+		$this->dir = $this->mkDirHash();
+
+		$this->saveFile($localfile);
+	
+		return array(
+				'fullname'=>$this->getFullName(),
+				'name'=>$this->name,
+				'ext'=>$this->ext,
+				'dir'=>$this->dir,
+				'url'=>$this->getUrl(),
+		);
+	}
 
 	protected function mkDirHash()
 	{
