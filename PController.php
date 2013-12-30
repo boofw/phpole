@@ -15,7 +15,7 @@ class PController {
 		($this->refer=$_POST['refer']) || ($this->refer=urldecode($_GET['refer'])) || ($this->refer=$_SERVER['HTTP_REFERER']) || ($this->refer='/');
 		($this->ajax=isset($_POST['ajax'])) || ($this->ajax=isset($_GET['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']==='XMLHttpRequest'));
 		if (PCfg::$cfg['sitename']) $this->pgTitle = PCfg::$cfg['sitename'];
-		if (!$this->theme || !is_dir(PMVC::$approot.'/theme/'.$this->theme)) $this->theme = 'default';
+		if (!$this->theme || ($this->theme!='default' && !is_dir(PMVC::$approot.'/theme/'.$this->theme))) $this->theme = 'default';
 		$this->before();
 	}
 	
@@ -24,8 +24,11 @@ class PController {
 	}
 	
 	function __call($func, $args) {
-		if (substr($func, 0, 6)=='action') var_dump('404');
-		else throw new Exception('Method '.__CLASS__.'::'.$func.' not found!');
+		if (substr($func, 0, 6)=='action') {
+			throw new Exception('Action '.substr($func, 6).' not found!', 404);
+		} else {
+			throw new Exception('Method '.__CLASS__.'::'.$func.' not found!');
+		}
 	}
 	
 	function before() {}
@@ -118,14 +121,17 @@ class PController {
 		return $s;
 	}
 	
-	private function getViewFile($view, $type='v') {
-		$r = PMVC::$approot.'/theme/'.$this->theme.'/'.$type.'/'.$view.'.php';
-		if (!file_exists($r)) $r = PMVC::$approot.'/theme/default/'.$type.'/'.$view.'.php';
+	private function getViewFile($view, $type='page') {
+		$r = PMVC::$approot.'/view/'.$type.'/'.$view.'.php';
+		if ($this->theme != 'default') {
+			$r = PMVC::$approot.'/theme/'.$this->theme.'/'.$type.'/'.$view.'.php';
+		}
+		if (!file_exists($r)) $r = PMVC::$approot.'/view/'.$type.'/'.$view.'.php';
 		return $r;
 	}
 	
 	private function getLayoutFile($layout) {
-		return $this->getViewFile($layout, 'l');
+		return $this->getViewFile($layout, 'layout');
 	}
 	
 }

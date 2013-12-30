@@ -59,6 +59,10 @@ class PDAO
 			self::$_obj = new self();
 		}
 
+		if (class_exists('PCfg')) {
+			PCfg::apply(__CLASS__);
+		}
+		
 		if (!isset(self::$cfg[$db]) || !isset(self::$cfg[$db]['dsn'])) {
 			throw new Exception('No such DB in config');
 		}

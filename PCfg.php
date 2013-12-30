@@ -15,13 +15,32 @@ class PCfg
 		} elseif ($cfg && is_string($cfg) && file_exists($cfg)) {
 			self::$cfg = require $cfg;
 		}
-
-		// Init config of libs
+	}
+	
+	/**
+	 * use after self::init, before <class> init
+	 * 
+	 * @param $class
+	 */
+	static function apply($class)
+	{
+		if (is_array(self::$cfg['libcfg'][$class])) {
+			foreach (self::$cfg['libcfg'][$class] as $k=>$v) {
+				$class::$$k = $v;
+			}
+		}
+		unset(self::$cfg['libcfg'][$class]);
+	}
+	
+	/**
+	 * use after self::init
+	 */
+	static function applyAll()
+	{
 		if (is_array(self::$cfg['libcfg'])) {
-			foreach (self::$cfg['libcfg'] as $class=>$ccfg) {
-				foreach ($ccfg as $k=>$v) {
-					$class::$$k = $v;
-				}
+			$keys = array_keys(self::$cfg['libcfg']);
+			foreach ($keys as $class) {
+				self::apply($class);
 			}
 		}
 		unset(self::$cfg['libcfg']);

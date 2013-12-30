@@ -15,6 +15,9 @@ class PService
 		if (isset(self::$_svcpool[$name]) && (self::$_svcpool[$name] instanceof self)) {
 			$svc = self::$_svcpool[$name];
 		} else {
+			if (class_exists('PCfg')) {
+				PCfg::apply(__CLASS__);
+			}
 			if (!self::$apiroot) {
 				throw new Exception('self::$apiroot is empty');
 			}

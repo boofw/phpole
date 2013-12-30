@@ -26,12 +26,14 @@ class PMVC
 	{
 		(self::$httpHost = $_SERVER['HTTP_X_REAL_HOST']) || (self::$httpHost = $_SERVER['HTTP_HOST']);
 
-		PCfg::init($cfg);
+		if (class_exists('PCfg')) {
+			PCfg::init($cfg);
+			PCfg::apply(__CLASS__);
+		}
 
 		if (!self::$approot) {
 			self::$approot = $_SERVER['DOCUMENT_ROOT'];
 		}
-		PAutoload::importDir(self::$approot.'/c');
 		
 		$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 		$root = dirname($_SERVER['DOCUMENT_URI']);
@@ -42,6 +44,7 @@ class PMVC
 			self::$route = array();
 		}
 		self::$route['/^\/([\w]+)\/([\w]+)([\/\?]{1}.*)?$/'] = 'c=$1&a=$2&v=$3';
+		self::$route['/^\/([\w]+)([\/\?]{1}.*)?$/'] = 'c=$1&a=index&v=$2';
 		foreach (self::$route as $rk=>$rv) {
 			if (preg_match($rk, $uri, $m)) {
 				foreach ($m as $mk=>$mv) {
@@ -71,7 +74,24 @@ class PMVC
 		if (!self::$r['a']) self::$r['a'] = 'index';
 		$c = ucfirst(self::$r['c']) . 'Controller';
 		$a = 'action' . ucfirst(self::$r['a']);
-		$c = new $c();
-		$c->$a();
+		if (!class_exists($c)) {
+			require self::$approot.'/controller/'.$c.'.php';
+		}
+		if (!class_exists($c)) {
+			$c = new ErrorController();
+			$c->actionIndex();
+		}
+		try {
+			$c = new $c();
+			$c->$a();
+		} catch (Exception $e) {
+			if ($e->getCode()==404) {
+				$c = new ErrorController();
+				$c->actionIndex();
+			} else {
+				throw $e;
+			}
+		}
+		
 	}
 }
