@@ -8,7 +8,10 @@ class LocalStorage
 	{
 		$fullpath = $this->basepath.'/'.$savepath;
 		PUtil::mkdir(dirname($fullpath));
-		move_uploaded_file($filepath, $fullpath);
+		$r = move_uploaded_file($filepath, $fullpath);
+		if (!$r) {
+			copy($filepath, $fullpath);
+		}
 	}
 	
 	function getUrl($storageObj)

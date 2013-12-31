@@ -11,7 +11,7 @@ class QiniuStorage
 	function save($filepath, $savepath)
 	{
 		Qiniu_SetKeys($this->ak, $this->sk);
-		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
+		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket.':'.$savepath);
 		$upToken = $putPolicy->Token(null);
 		$putExtra = new Qiniu_PutExtra();
 		$putExtra->Crc32 = 1;

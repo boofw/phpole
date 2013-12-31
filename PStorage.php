@@ -16,7 +16,7 @@ class PStorage
 	public $name;
 	public $ext;
 	public $dir;
-	
+
 	private static $driverObj;
 
 	protected function __construct()
@@ -36,23 +36,39 @@ class PStorage
 		return $o;
 	}
 
-	static function upload($fileobj)
+	static function upload($fileobj, $filename=NULL)
 	{
-		$o = new self();
-		$o->name = uniqid();
-		$o->ext = PFile::path2ext($fileobj['name']);
-		if (!$o->ext) $o->ext = PFile::mime2ext($fileobj['type']);
-		$o->dir = $o->mkDirHash();
-
+		if ($filename) {
+			$o = self::init($filename);
+		} else {
+			$o = new self();
+			$o->name = uniqid();
+			$o->ext = PFile::path2ext($fileobj['name']);
+			if (!$o->ext) $o->ext = PFile::mime2ext($fileobj['type']);
+			$o->dir = $o->mkDirHash();
+		}
 		$o->saveFile($fileobj['tmp_name']);
 		return $o;
 	}
 
-	static function putFile($localfile, $filename)
+	static function copy($filepath, $filename=NULL)
 	{
-		$o = self::init($filename);
-		$o->saveFile($localfile);
-		return $o;
+		if ($filename) {
+			$o = static::init($filename);
+			$o->saveFile($filepath);
+			return $o;
+		}
+		$fileobj = array(
+				'name'=>pathinfo($filepath, PATHINFO_BASENAME),
+				'tmp_name'=>$filepath,
+				'type'=>'application/octet-stream',
+				'size'=>filesize($filepath),
+				'error'=>0
+		);
+		if (function_exists('finfo_file')) {
+			$fileobj['type'] = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filepath);
+		}
+		return static::upload($fileobj, $filename);
 	}
 
 	protected function mkDirHash()
@@ -83,9 +99,9 @@ class PStorage
 	protected function saveFile($filepath)
 	{
 		$this->initDriver();
-		self::$driverObj->save($filepath, $this->getPath());
+		return self::$driverObj->save($filepath, $this->getPath());
 	}
-	
+
 	protected function initDriver()
 	{
 		$driver = ucfirst(strtolower(self::$driver)).'Storage';

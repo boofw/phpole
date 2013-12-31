@@ -15,6 +15,7 @@ class PCfg
 		} elseif ($cfg && is_string($cfg) && file_exists($cfg)) {
 			self::$cfg = require $cfg;
 		}
+		self::$cfg['lib_cfg_data'] = self::$cfg['lib'];
 	}
 	
 	/**
@@ -24,12 +25,12 @@ class PCfg
 	 */
 	static function apply($class)
 	{
-		if (is_array(self::$cfg['libcfg'][$class])) {
-			foreach (self::$cfg['libcfg'][$class] as $k=>$v) {
+		if (is_array(self::$cfg['lib_cfg_data'][$class])) {
+			foreach (self::$cfg['lib_cfg_data'][$class] as $k=>$v) {
 				$class::$$k = $v;
 			}
 		}
-		unset(self::$cfg['libcfg'][$class]);
+		unset(self::$cfg['lib_cfg_data'][$class]);
 	}
 	
 	/**
@@ -37,12 +38,12 @@ class PCfg
 	 */
 	static function applyAll()
 	{
-		if (is_array(self::$cfg['libcfg'])) {
-			$keys = array_keys(self::$cfg['libcfg']);
+		if (is_array(self::$cfg['lib_cfg_data'])) {
+			$keys = array_keys(self::$cfg['lib_cfg_data']);
 			foreach ($keys as $class) {
 				self::apply($class);
 			}
 		}
-		unset(self::$cfg['libcfg']);
+		unset(self::$cfg['lib_cfg_data']);
 	}
 }
