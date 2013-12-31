@@ -16,80 +16,43 @@ class PStorage
 	public $name;
 	public $ext;
 	public $dir;
+	
+	private static $driverObj;
 
-	private function __construct()
-	{
-	}
-
-	static function init()
+	protected function __construct()
 	{
 		if (class_exists('PCfg')) {
 			PCfg::apply(__CLASS__);
 		}
-		$driver = ucfirst(strtolower(self::$driver)).'Storage';
-		if (!class_exists($driver)) {
-			require dirname(__FILE__).'/storage/'.$driver.'.php';
-		}
-		if (!class_exists($driver)) {
-			throw new Exception('Storage Driver `'.$driver.'` not found');
-		}
-		$o = new $driver();
-		foreach (self::$cfg as $k=>$v) {
-			$o->$k = $v;
-		}
+	}
+
+	static function init($filename)
+	{
+		$o = new self();
+		$d = pathinfo($filename);
+		$o->name = $d['filename'];
+		$o->ext = $d['extension'];
+		$o->dir = $o->mkDirHash();
 		return $o;
 	}
 
-	function upload($fileobj)
+	static function upload($fileobj)
 	{
-		$this->name = uniqid();
-		$this->ext = PFile::path2ext($fileobj['name']);
-		if (!$this->ext) $this->ext = PFile::mime2ext($fileobj['type']);
-		$this->dir = $this->mkDirHash();
+		$o = new self();
+		$o->name = uniqid();
+		$o->ext = PFile::path2ext($fileobj['name']);
+		if (!$o->ext) $o->ext = PFile::mime2ext($fileobj['type']);
+		$o->dir = $o->mkDirHash();
 
-		$this->saveFile($fileobj['tmp_name']);
-
-		return array(
-				'fullname'=>$this->getFullName(),
-				'name'=>$this->name,
-				'ext'=>$this->ext,
-				'dir'=>$this->dir,
-				'url'=>$this->getUrl(),
-		);
+		$o->saveFile($fileobj['tmp_name']);
+		return $o;
 	}
 
-	function info($filename)
+	static function putFile($localfile, $filename)
 	{
-		$d = pathinfo($filename);
-		$this->name = $d['filename'];
-		$this->ext = $d['extension'];
-		$this->dir = $this->mkDirHash();
-
-		return array(
-				'fullname'=>$filename,
-				'name'=>$this->name,
-				'ext'=>$this->ext,
-				'dir'=>$this->dir,
-				'url'=>$this->getUrl(),
-		);
-	}
-	
-	function putFile($localfile, $filename)
-	{
-		$d = pathinfo($filename);
-		$this->name = $d['filename'];
-		$this->ext = $d['extension'];
-		$this->dir = $this->mkDirHash();
-
-		$this->saveFile($localfile);
-	
-		return array(
-				'fullname'=>$this->getFullName(),
-				'name'=>$this->name,
-				'ext'=>$this->ext,
-				'dir'=>$this->dir,
-				'url'=>$this->getUrl(),
-		);
+		$o = self::init($filename);
+		$o->saveFile($localfile);
+		return $o;
 	}
 
 	protected function mkDirHash()
@@ -97,25 +60,44 @@ class PStorage
 		return substr($this->name, -3);
 	}
 
-	protected function getFullName()
+	function getFullName()
 	{
 		$fullname = $this->name;
 		if ($this->ext) $fullname .= '.'.$this->ext;
 		return $fullname;
 	}
 
-	protected function getPath()
+	function getPath()
 	{
 		$dir = $this->dir;
 		if ($dir) $dir .= '/';
 		return $dir.$this->getFullName();
 	}
 
-	protected function getUrl()
+	function getUrl()
 	{
+		$this->initDriver();
+		return self::$driverObj->getUrl($this);
 	}
 
 	protected function saveFile($filepath)
 	{
+		$this->initDriver();
+		self::$driverObj->save($filepath, $this->getPath());
+	}
+	
+	protected function initDriver()
+	{
+		$driver = ucfirst(strtolower(self::$driver)).'Storage';
+		if (!class_exists($driver)) {
+			require dirname(__FILE__).'/storage/'.$driver.'.php';
+		}
+		if (!class_exists($driver)) {
+			throw new Exception('Storage Driver `'.$driver.'` not found');
+		}
+		self::$driverObj = new $driver();
+		foreach (self::$cfg as $k=>$v) {
+			self::$driverObj->$k = $v;
+		}
 	}
 }

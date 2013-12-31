@@ -1,20 +1,18 @@
 <?php
-class LocalStorage extends PStorage
+class LocalStorage
 {
 	public $basepath;
 	public $baseurl;
 
-	protected function saveFile($filepath)
+	function save($filepath, $savepath)
 	{
-		if ($this->dir) {
-			$this->basepath .= '/'.$this->dir;
-		}
-		PUtil::mkdir($this->basepath);
-		move_uploaded_file($filepath, $this->basepath.'/'.$this->getFullName());
+		$fullpath = $this->basepath.'/'.$savepath;
+		PUtil::mkdir(dirname($fullpath));
+		move_uploaded_file($filepath, $fullpath);
 	}
 	
-	protected function getUrl()
+	function getUrl($storageObj)
 	{
-		return $this->baseurl.'/'.$this->getPath();
+		return $this->baseurl.'/'.$storageObj->getPath();
 	}
 }

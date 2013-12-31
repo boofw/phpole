@@ -73,8 +73,7 @@ class PController {
 		if ($ajax) {
 			die(json_encode($data));
 		} else {
-			$this->layout = 'auth';
-			$this->render('cmsg', $data);
+			die($this->renderFile(PMVC::$approot.'/view/cmsg.php', $data));
 		}
 	}
 	

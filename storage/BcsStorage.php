@@ -1,23 +1,23 @@
 <?php
 require __DIR__.'/../../../baidu/bcs/bcs.class.php';
 
-class BcsStorage extends PStorage
+class BcsStorage
 {
 	public $ak;
 	public $sk;
 	public $bucket;
 	public $host = NULL;
 	
-	protected function saveFile($filepath)
+	function save($filepath, $savepath)
 	{
 		$baiduBCS = new BaiduBCS($this->ak, $this->sk, $this->host);
-		$response = $baiduBCS->create_object($this->bucket, '/'.$this->getPath(), $filepath);
+		$response = $baiduBCS->create_object($this->bucket, '/'.$savepath, $filepath);
 		return $response->isOK();
 	}
 	
-	protected function getUrl()
+	function getUrl($storageObj)
 	{
-		return 'http://bcs.duapp.com/'.$this->bucket.'/'.$this->getPath();
+		return 'http://bcs.duapp.com/'.$this->bucket.'/'.$storageObj->getPath();
 	}
 	
 // 	function cache($name, $bcsLocalFilePath)
