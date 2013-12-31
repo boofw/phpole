@@ -70,6 +70,18 @@ class PStorage
 		}
 		return static::upload($fileobj, $filename);
 	}
+	
+	function info()
+	{
+		return array(
+				'name'=>$this->name,
+				'ext'=>$this->ext,
+				'fullname'=>$this->getFullName(),
+				'path'=>$this->getPath(),
+				'url'=>$this->getUrl(),
+				'thumb'=>$this->getThumb()
+		);
+	}
 
 	protected function mkDirHash()
 	{
@@ -94,6 +106,11 @@ class PStorage
 	{
 		$this->initDriver();
 		return self::$driverObj->getUrl($this);
+	}
+	
+	function getThumb()
+	{
+		return $this->getUrl();
 	}
 
 	protected function saveFile($filepath)
