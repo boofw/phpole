@@ -1,22 +1,20 @@
 <?php
 class QqOAuth extends POAuth
 {
-	function getLoginUrl($callbackurl=NULL) {
-		if (!$callbackurl) {
-			$callbackurl = self::$callback;
-		}
+	function getLoginUrl()
+	{
 		$data = array(
-				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>$callbackurl,
+				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>self::$callback,
 				'scope'=>'get_user_info,add_t,add_pic_t,add_share,add_idol',
 		);
 		return 'https://graph.qq.com/oauth2.0/authorize?'.http_build_query($data);
 	}
 
-	function getUserInfo($request = null) {
-		if (!$request) $request = $_REQUEST;
+	function getUserInfo($code)
+	{
 		$data = array(
 				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->appkey,
-				'code'=>$request['code'], 'redirect_uri'=>$request['callbackurl'],
+				'code'=>$code, 'redirect_uri'=>self::$callback,
 		);
 		$s = PHttp::get('https://graph.qq.com/oauth2.0/token', $data);
 		parse_str($s, $r);
@@ -34,8 +32,9 @@ class QqOAuth extends POAuth
 		);
 	}
 
-	function add_t($content, $img = null, $pos = array(), $args = array()) {
-		if ($args['title']) $this->add_share($content, $img, $args);
+	function add_t($content, $imgpath = null, $pos = array(), $args = array())
+	{
+		if ($args['title']) $this->add_share($content, $imgpath, $args);
 		$url = 'https://graph.qq.com/t/add_t';
 		$data = array(
 			'format' => 'json',
@@ -44,16 +43,12 @@ class QqOAuth extends POAuth
 			'jing' => $pos['jing'],
 			'wei' => $pos['wei'],
 		);
-		if ($img) {
-			$file = __DIR__.'/../runtime/'.time().uniqid().trim(strrchr($img, '/'), '/ ');
-			copy($img, $file);
-			$data['pic'] = '@'.$file;
+		if ($imgpath && file_exists($imgpath)) {
 			$url = 'https://graph.qq.com/t/add_pic_t';
+			$data['pic'] = '@'.$imgpath;
 		}
 		$data = $this->mergeParam($data);
-		$r = $this->post($url, $data);
-		$r = json_decode($r, 1);
-		return $r['data']['id'];
+		return PHttp::post($url, $data);
 	}
 	
 	private function add_share($content, $img = null, $args = array()) {
@@ -68,7 +63,7 @@ class QqOAuth extends POAuth
 				'nswb' => 1,
 		);
 		$data = $this->mergeParam($data);
-		$ret = $this->post($url, $data);
+		$ret = PHttp::post($url, $data);
 		return $ret;
 	}
 	
@@ -79,7 +74,7 @@ class QqOAuth extends POAuth
 				'fopenids' => $rid,
 		);
 		$data = $this->mergeParam($data);
-		$ret = $this->post($url, $data);
+		$ret = PHttp::post($url, $data);
 		return $ret;
 	}
 
@@ -92,5 +87,4 @@ class QqOAuth extends POAuth
 		if (is_array($data)) $param = array_merge($data, $param);
 		return $param;
 	}
-
 }

@@ -1,21 +1,20 @@
 <?php
 class TaobaoOAuth extends POAuth
 {
-	function getLoginUrl($callbackurl=NULL) {
-		if (!$callbackurl) {
-			$callbackurl = self::$callback;
-		}
+	function getLoginUrl()
+	{
 		$data = array(
-				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>$callbackurl,
+				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>self::$callback,
+				//'scope'=>'',
 		);
 		return 'https://oauth.taobao.com/authorize?'.http_build_query($data);
 	}
 
-	function getUserInfo($request = null) {
-		if (!$request) $request = $_REQUEST;
+	function getUserInfo($code)
+	{
 		$data = array(
-				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->key,
-				'code'=>$request['code'], 'redirect_uri'=>$request['callbackurl'],
+				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->appkey,
+				'code'=>$code, 'redirect_uri'=>self::$callback,
 		);
 		$r = PHttp::post('https://oauth.taobao.com/token', $data);
 		$r = json_decode($r, 1);
@@ -27,9 +26,4 @@ class TaobaoOAuth extends POAuth
 				'refresh_token'=>$r['refresh_token']
 		);
 	}
-
-	function add_t($content, $img = null, $ip = null, $jing = null, $wei = null) {
-
-	}
-
 }

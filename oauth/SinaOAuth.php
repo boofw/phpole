@@ -1,18 +1,20 @@
 <?php
 class SinaOAuth extends POAuth
 {	
-	function getLoginUrl($callbackurl=NULL) {
+	function getLoginUrl()
+	{
 		$data = array(
-				'client_id'=>$this->appid, 'redirect_uri'=>self::$callback,
+				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>self::$callback,
 				//'scope'=>'all',
 		);
 		return 'https://api.weibo.com/oauth2/authorize?'.http_build_query($data);
 	}
 	
-	function getUserInfo($request=NULL) {
+	function getUserInfo($code)
+	{
 		$data = array(
 				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->appkey,
-				'code'=>$request['code'], 'redirect_uri'=>self::$callback,
+				'code'=>$code, 'redirect_uri'=>self::$callback,
 		);
 		$r = PHttp::post('https://api.weibo.com/oauth2/access_token', $data);
 		$r = json_decode($r, 1);
@@ -26,19 +28,25 @@ class SinaOAuth extends POAuth
 				'refresh_token'=>''
 		);
 	}
-	
-	function add_t($content, $img = null, $pos = array(), $args = array()) {
-		// @todo add_t
-		$c = new SaeTClientV2($this->appid, $this->key, $this->access_token);
-		if ($img) $r = $c->upload($content, $img, $pos['wei'], $pos['jing']);
-		else $r = $c->update($content, $pos['wei'], $pos['jing']);
-		return $r['idstr'];
+
+	function add_t($content, $imgpath = null, $pos = array(), $args = array())
+	{
+		$data = array(
+				'access_token'=>$this->access_token,
+				'status'=>urlencode($content),
+		);
+		$url = 'https://api.weibo.com/2/statuses/update.json';
+		if ($imgpath && file_exists($imgpath)) {
+			$url = 'https://upload.api.weibo.com/2/statuses/upload.json';
+			$data['pic'] = '@'.$imgpath;
+		}
+		return PHttp::post($url, $data);
 	}
 	
 	function follow($rid) {
-		// @todo follow
-		$c = new SaeTClientV2($this->appid, $this->key, $this->access_token);
-		return $c->follow_by_id($rid);
+		return PHttp::post('https://api.weibo.com/2/friendships/create.json', array(
+				'access_token'=>$this->access_token,
+				'uid'=>$rid,
+		));
 	}
-
 }

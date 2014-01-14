@@ -11,7 +11,7 @@ class POAuth
 	
 	public $sitename;
 	
-	static function init($site)
+	static function init($site, $args=NULL)
 	{
 		if (class_exists('PCfg')) {
 			PCfg::apply(__CLASS__);
@@ -27,45 +27,48 @@ class POAuth
 		foreach (self::$cfg[$site] as $k=>$v) {
 			$o->$k = $v;
 		}
+		if (is_array($args)) {
+			$o->access_token = $args['token'];
+			$o->openid = $args['rid'];
+		}
 		return $o;
 	}
 	
 	/**
 	 * 获取登录页地址
-	 * @param string $callbackurl 回调页Url
 	 * @return 登录页地址
 	 */
-	function getLoginUrl($callbackurl=NULL)
+	function getLoginUrl()
 	{
 	}
 	
 	/**
 	 * 获取登录用户相关信息
-	 * @param array $request 回调返回的内容，一般为$_REQUEST
+	 * @param string $code 回调返回的Authorization Code，一般为$_GET['code']
 	 * @return array(
 	 * 		'access_token' => '', 'expires_in' => '',
 	 * 		'uid' => '', 'name' => '', 'avatar' => '',
 	 * 		'refresh_token' => '',
 	 * )
 	 */
-	function getUserInfo($request = null)
+	function getUserInfo($code)
 	{
 	}
 	
 	/**
 	 * 发微博
 	 * @param $content 微博内容
-	 * @param $img 图片
+	 * @param $imgpath 图片路径
 	 * @param $pos {ip:ip, jing:位置经度, wei:位置纬度}
 	 * @param $args
 	 */
-	function add_t($content, $img = null, $pos = array(), $args = array())
+	function add_t($content, $imgpath = null, $pos = array(), $args = array())
 	{
 	}
 	
 	/**
 	 * 加关注
-	 * @param $rid 被关注用户id
+	 * @param $rid 被关注用户openid
 	 */
 	function follow($rid)
 	{

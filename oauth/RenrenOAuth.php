@@ -1,22 +1,20 @@
 <?php
 class RenrenOAuth extends POAuth
 {
-	function getLoginUrl($callbackurl=NULL) {
-		if (!$callbackurl) {
-			$callbackurl = self::$callback;
-		}
+	function getLoginUrl()
+	{
 		$data = array(
-				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>$callbackurl,
+				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>self::$callback,
 				'scope'=>'publish_feed',
 		);
 		return 'https://graph.renren.com/oauth/authorize?'.http_build_query($data);
 	}
 
-	function getUserInfo($request = null) {
-		if (!$request) $request = $_REQUEST;
+	function getUserInfo($code)
+	{
 		$data = array(
-				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->key,
-				'code'=>$request['code'], 'redirect_uri'=>$request['callbackurl'],
+				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->appkey,
+				'code'=>$code, 'redirect_uri'=>self::$callback,
 		);
 		$r = PHttp::post('http://graph.renren.com/oauth/token', $data);
 		$r = json_decode($r, 1);
@@ -29,7 +27,8 @@ class RenrenOAuth extends POAuth
 		);
 	}
 
-	function add_t($content, $img = null, $ip = null, $jing = null, $wei = null) {
+	function add_t($content, $imgpath = null, $pos = array(), $args = array())
+	{
 		$url = 'https://api.renren.com/v2/feed/put';
 		$data = array(
 				'message' => $content,
@@ -41,5 +40,4 @@ class RenrenOAuth extends POAuth
 		$r = PHttp::post($url, $data);
 		return $r;
 	}
-
 }

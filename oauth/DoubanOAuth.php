@@ -1,21 +1,20 @@
 <?php
 class DoubanOAuth extends POAuth
 {
-	function getLoginUrl($callbackurl=NULL) {
-		if (!$callbackurl) {
-			$callbackurl = self::$callback;
-		}
+	function getLoginUrl()
+	{
 		$data = array(
-				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>$callbackurl,
+				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>self::$callback,
+				//'scope'=>'',
 		);
 		return 'https://www.douban.com/service/auth2/auth?'.http_build_query($data);
 	}
 
-	function getUserInfo($request = null) {
-		if (!$request) $request = $_REQUEST;
+	function getUserInfo($code)
+	{
 		$data = array(
-				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->key,
-				'code'=>$request['code'], 'redirect_uri'=>$request['callbackurl'],
+				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->appkey,
+				'code'=>$code, 'redirect_uri'=>self::$callback,
 		);
 		$r = PHttp::post('https://www.douban.com/service/auth2/token', $data);
 		$r = json_decode($r, 1);
@@ -26,13 +25,8 @@ class DoubanOAuth extends POAuth
 		$this->openid = $r['douban_user_id'];
 		return array(
 				'access_token'=>$this->access_token, 'expires_in'=>$r['expires_in'],
-				'uid'=>$this->openid, 'name'=>$r['douban_user_name'], 'avatar'=>'', 
+				'uid'=>$this->openid, 'name'=>$r['douban_user_name'], 'avatar'=>'',
 				'refresh_token'=>$r['refresh_token'],
 		);
 	}
-
-	function add_t($content, $img = null, $ip = null, $jing = null, $wei = null) {
-
-	}
-
 }
