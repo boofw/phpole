@@ -5,9 +5,11 @@ class POAuth
 	static $cfg = array();
 	
 	protected $appid;
-	protected $key;
+	protected $appkey;
 	protected $access_token;
 	protected $openid;
+	
+	public $sitename;
 	
 	static function init($site)
 	{
@@ -22,7 +24,7 @@ class POAuth
 			throw new Exception('OAuth Driver `'.$driver.'` not found');
 		}
 		$o = new $driver();
-		foreach (self::$cfg as $k=>$v) {
+		foreach (self::$cfg[$site] as $k=>$v) {
 			$o->$k = $v;
 		}
 		return $o;
@@ -33,7 +35,7 @@ class POAuth
 	 * @param string $callbackurl 回调页Url
 	 * @return 登录页地址
 	 */
-	function getLoginUrl($callbackurl)
+	function getLoginUrl($callbackurl=NULL)
 	{
 	}
 	

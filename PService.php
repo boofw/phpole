@@ -43,6 +43,11 @@ class PService
 
 	private function __construct()
 	{
+		$this->before();
+	}
+	
+	function before()
+	{
 	}
 
 }

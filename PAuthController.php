@@ -12,9 +12,12 @@ class PAuthController extends PController {
 		}
 	}
 
-	function loginReqired() {
+	function loginReqired($returnUrl=NULL) {
 		if (!$_SESSION['user']['id']) {
-			$_SESSION['loginrefer'] = $_SERVER['REQUEST_URI'];
+			if (!$returnUrl) {
+				$returnUrl = $_SERVER['REQUEST_URI'];
+			}
+			$_SESSION['loginrefer'] = $returnUrl;
 			$this->redirect('/auth/login');
 		}
 	}

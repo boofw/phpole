@@ -1,7 +1,10 @@
 <?php
 class QqOAuth extends POAuth
 {
-	function getLoginUrl($callbackurl) {
+	function getLoginUrl($callbackurl=NULL) {
+		if (!$callbackurl) {
+			$callbackurl = self::$callback;
+		}
 		$data = array(
 				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>$callbackurl,
 				'scope'=>'get_user_info,add_t,add_pic_t,add_share,add_idol',
@@ -12,7 +15,7 @@ class QqOAuth extends POAuth
 	function getUserInfo($request = null) {
 		if (!$request) $request = $_REQUEST;
 		$data = array(
-				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->key,
+				'grant_type'=>'authorization_code', 'client_id'=>$this->appid, 'client_secret'=>$this->appkey,
 				'code'=>$request['code'], 'redirect_uri'=>$request['callbackurl'],
 		);
 		$s = PHttp::get('https://graph.qq.com/oauth2.0/token', $data);

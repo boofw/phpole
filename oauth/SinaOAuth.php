@@ -1,7 +1,10 @@
 <?php
 class SinaOAuth extends POAuth
 {	
-	function getLoginUrl($callbackurl) {
+	function getLoginUrl($callbackurl=NULL) {
+		if (!$callbackurl) {
+			$callbackurl = self::$callback;
+		}
 		$o = new SaeTOAuthV2($this->appid, $this->key);
 		return $o->getAuthorizeURL($callbackurl);
 	}

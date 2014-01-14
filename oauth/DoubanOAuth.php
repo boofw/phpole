@@ -1,7 +1,10 @@
 <?php
 class DoubanOAuth extends POAuth
 {
-	function getLoginUrl($callbackurl) {
+	function getLoginUrl($callbackurl=NULL) {
+		if (!$callbackurl) {
+			$callbackurl = self::$callback;
+		}
 		$data = array(
 				'response_type'=>'code', 'client_id'=>$this->appid, 'redirect_uri'=>$callbackurl,
 		);
