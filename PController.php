@@ -92,8 +92,6 @@ class PController {
 		foreach (PMVC::$css as $v) {
 			if ($v) $assets .= '<link rel="stylesheet" href="'.PCfg::$cfg['assetsUrl'].'/css/'.$v.'.css"/>'."\n";
 		}
-		$cdnUrl = PCfg::$cfg['imgCdnUrl'] ? PCfg::$cfg['imgCdnUrl'] : PCfg::$cfg['uploadFileUrl'];
-		$assets .= "<script>var cdnUrl='$cdnUrl';</script>\n";
 		foreach (PMVC::$js as $v) {
 			if ($v) $assets .= '<script src="'.PCfg::$cfg['assetsUrl'].'/js/'.$v.'.js"></script>'."\n";
 		}
