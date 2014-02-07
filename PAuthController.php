@@ -19,6 +19,8 @@ class PAuthController extends PController {
 			}
 			$_SESSION['loginrefer'] = $returnUrl;
 			$this->redirect('/auth/login');
+		} elseif (is_string($returnUrl) && $returnUrl) {
+			$this->redirect($returnUrl);
 		}
 	}
 
