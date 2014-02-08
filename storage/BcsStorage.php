@@ -1,5 +1,5 @@
 <?php
-require __DIR__.'/../../../baidu/bcs/bcs.class.php';
+require __DIR__.'/../../../../ext/baidu/bcs/bcs.class.php';
 
 class BcsStorage
 {
