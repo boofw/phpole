@@ -13,6 +13,12 @@ class PStorage
 	 */
 	static $cfg = array();
 
+	/**
+	 * @var string 头像使用单独bucket的后缀
+	 * 在继承出的AAvatar中配置
+	 */
+	protected $avatarBucketFix = '';
+
 	public $name;
 	public $ext;
 	public $dir;
@@ -131,6 +137,9 @@ class PStorage
 		self::$driverObj = new $driver();
 		foreach (self::$cfg as $k=>$v) {
 			self::$driverObj->$k = $v;
+		}
+		if ($this->avatarBucketFix && isset(self::$driverObj->bucket)) {
+			self::$driverObj->bucket .= $this->avatarBucketFix;
 		}
 	}
 }
