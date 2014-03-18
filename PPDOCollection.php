@@ -1,7 +1,17 @@
 <?php
-class PMoTable
+/**
+ * PDO to Mongo Interface
+ */
+class PPDOCollection
 {
-	private $tablename = 'xiciuser';
+	private $db;
+	private $tablename;
+	
+	function __construct(PDO $db, $tablename)
+	{
+		$this->db = $db;
+		$this->tablename = $tablename;
+	}
 	
 	function count()
 	{
@@ -10,7 +20,6 @@ class PMoTable
 	
 	function find($query=array(), $fields=array())
 	{
-		$db = new PDO('mysql:host=localhost;dbname=test', 'root', 'root', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
 		$fieldstr = '';
 		foreach ($fields as $k=>$v) {
 			if ($v) {
@@ -21,6 +30,7 @@ class PMoTable
 		if (!$fieldstr) {
 			$fieldstr = '*';
 		}
+		$input_parameters = array();
 		foreach ($query as $k=>$v) {
 			if ($k=='$or' && is_array($v)) {
 				foreach ($v as $ck=>$cv) {
@@ -40,8 +50,11 @@ class PMoTable
 				}
 			}
 		}
-		$sql = "SELECT $fieldstr FROM `{$this->tablename}`";
-		return $db->prepare($sql)->execute($input_parameters)->fetchAll(PDO::FETCH_ASSOC);
+		$sql = "SELECT $fieldstr FROM `{$this->tablename}` limit 2";
+		$q = $this->db->prepare($sql);
+		$q->execute($input_parameters);
+		$q->setFetchMode(PDO::FETCH_ASSOC);
+		return $q;
 	}
 	
 	function insert()
