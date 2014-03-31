@@ -366,8 +366,4 @@ class PDAO
 		if (is_array($where[0])) $where[0] = implode(' and ', $where[0]);
 		return $where;
 	}
-
 }
-/*
-
-*/
