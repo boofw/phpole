@@ -19,8 +19,7 @@ class PUtil {
 		else return '刚刚';
 	}
 
-	static function meta($s, $len=120) {
-		$s = preg_replace('/\[simg\](.{17})\[\/simg\]/', '', $s);
+	static function subtxt($s, $len=0) {
 		$s = html_entity_decode(strip_tags($s));
 		$s = str_replace(array('　',"\n","\r","\t"), ' ', $s);
 		$s = preg_replace('/\s{2,}/', ' ', $s);
@@ -29,7 +28,7 @@ class PUtil {
 		return $s;
 	}
 	
-	static function metaPre($s, $len=0) {
+	static function subtxtbr($s, $len=0) {
 		$s = nl2br($s);
 		$s = preg_replace('/\s{2,}/', ' ', $s);
 		$s = str_replace('<p', "\n<p", $s);
