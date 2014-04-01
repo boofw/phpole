@@ -92,12 +92,12 @@ class PDAO
 	 * @example $obj->get($id); 获取主键为$id的数据行
 	 * @example $obj->get(array("id=? and name=?", array($id,$name))); 获取 id为$id，name为$name 的第一行数据
 	 * @example $obj->get(array("id=:id and name=:name", array(':id'=>$id,':name'=>$name))); 获取 id为$id，name为$name 的第一行数据
-	 * @example $obj->get(array(), $order); 获取数据表中第一行数据，$order示例参见 $this->getAll()
+	 * @example $obj->get(array(), $order); 获取数据表中第一行数据，$order示例参见 $this->all()
 	 */
 	public function get($where, $order = array()) {
 		$res = array();
 		if (is_array($where)) {
-			$r = $this->getAll($where, $order, 1);
+			$r = $this->all($where, $order, 1);
 			if (isset($r[0])) $res = $r[0];
 		} else {
 			$q = $this->db->prepare("select * from `{$this->fullname}` where `{$this->pk}`=?");
@@ -114,7 +114,7 @@ class PDAO
 	 * @param array $order 排序
 	 * @return string
 	 */
-	public function getColumn($column, $where, $order = array()) {
+	public function column($column, $where, $order = array()) {
 		$r = $this->get($where, $order);
 		return $r[$column];
 	}
@@ -229,15 +229,15 @@ class PDAO
 	 * @param int $offset
 	 * @return array 结果数据数组
 	 *
-	 * @example $obj->getAll(array("id=? and name=?", array($id,$name))); 获取 id为$id，name为$name 的全部数据行
-	 * @example $obj->getAll(array("id>:id or name=:name", array(':id'=>$id,':name'=>$name))); 获取 id>$id或name为$name 的全部数据行
-	 * @example $obj->getAll(array('id'=>$id,'name'=>$name)); 获取 id为$id，name为$name 的全部数据行
-	 * @example $obj->getAll(array("id>10","name='pole'")); 获取 id>10，name为'pole'的全部数据行[!已知条件数据，不可使用变量]
-	 * @example $obj->getAll(array()); 获取数据表中全部数据，主键倒序
-	 * @example $obj->getAll(array(), array()); 获取数据表中全部数据，默认排序
-	 * @example $obj->getAll(array(), array('id desc', 'name')); 获取数据表中全部数据，id倒序，name升序
+	 * @example $obj->all(array("id=? and name=?", array($id,$name))); 获取 id为$id，name为$name 的全部数据行
+	 * @example $obj->all(array("id>:id or name=:name", array(':id'=>$id,':name'=>$name))); 获取 id>$id或name为$name 的全部数据行
+	 * @example $obj->all(array('id'=>$id,'name'=>$name)); 获取 id为$id，name为$name 的全部数据行
+	 * @example $obj->all(array("id>10","name='pole'")); 获取 id>10，name为'pole'的全部数据行[!已知条件数据，不可使用变量]
+	 * @example $obj->all(array()); 获取数据表中全部数据，主键倒序
+	 * @example $obj->all(array(), array()); 获取数据表中全部数据，默认排序
+	 * @example $obj->all(array(), array('id desc', 'name')); 获取数据表中全部数据，id倒序，name升序
 	 */
-	public function getAll($where = array(), $order = array(), $num = 0, $offset = 0) {
+	public function all($where = array(), $order = array(), $num = 0, $offset = 0) {
 		if (is_null($order)) $order = array("{$this->pk} desc");
 		if (!is_array($order)) $order = array();
 		$where = $this->fixWhere($where);
@@ -256,12 +256,12 @@ class PDAO
 	 * @param string $column 查询相关字段
 	 * @return array 结果集
 	 */
-	public function getIn($values, $column = NULL) {
+	public function in($values, $column = NULL) {
 		if (is_null($column)) $column = $this->pk;
 		if (is_array($values) && $num = count($values)) {
 			$placers = array_fill(0, $num, '?');
 			$where = array("`$column` in (".implode(',', $placers).")", $values);
-			return $this->getAll($where);
+			return $this->all($where);
 		}
 	}
 
@@ -273,7 +273,7 @@ class PDAO
 	 * @param int $offset
 	 * @return int 结果总行数
 	 */
-	public function getCount($where = array(), $order = array(), $num = 0, $offset = 0) {
+	public function count($where = array(), $order = array(), $num = 0, $offset = 0) {
 		if (is_null($order)) $order = array("{$this->pk} desc");
 		if (!is_array($order)) $order = array();
 		$where = $this->fixWhere($where);
@@ -294,11 +294,11 @@ class PDAO
 	 * @param int $pagesize
 	 * @return array {pager:{total:总数, page:当前页号, pagesize:每页条数, pagetotal:总页数}, data:{#内容#}}
 	 */
-	public function getPage($where = array(), $order = array(), $page = 1, $pagesize = 20) {
+	public function page($where = array(), $order = array(), $page = 1, $pagesize = 20) {
 		if ($page<1) $page = 1;
 		$offset = ($page-1) * $pagesize;
-		$total = $this->getCount($where);
-		$data = $this->getAll($where, $order, $pagesize, $offset);
+		$total = $this->count($where);
+		$data = $this->all($where, $order, $pagesize, $offset);
 		return array('data'=>$data, 'pager'=>array('total'=>$total, 'page'=>$page, 'pagesize'=>$pagesize, 'pagemax'=>ceil($total/$pagesize)));
 	}
 

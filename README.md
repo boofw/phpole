@@ -121,9 +121,9 @@ Usage
 ```
 PDAO::$cfg = $cfg; // or use PCfg::init($cfg);
 
-$r = PDAO::init('user')->getAll(array(), array(), 10);
+$r = PDAO::init('user')->all(array(), array(), 10);
 
-$r = D('user')->getAll(array(), array(), 10); // require 'vendor/polev/phpole/functions.php'
+$r = D('user')->all(array(), array(), 10); // require 'vendor/polev/phpole/functions.php'
 ```
 
 * PService
