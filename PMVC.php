@@ -52,10 +52,14 @@ class PMVC
 				}
 				parse_str($rv, $args);
 				if (is_array($args)) {
+					self::$r['c'] = $args['c'];
+					self::$r['a'] = $args['a'];
+					unset($args['c']);
+					unset($args['a']);
 					if ($args['v']) {
 						$moreArgs = explode('/', trim($args['v'], '/'));
 						for ($i=0; $i<count($moreArgs); $i=$i+2) {
-							if (!is_numeric($moreArgs[$i])) {
+							if (!is_numeric($moreArgs[$i]) && !(preg_match('/^\$[1-9]$/', $moreArgs[$i]) && !$moreArgs[$i+1])) {
 								$args[$moreArgs[$i]] = $moreArgs[$i+1];
 							}
 						}
@@ -66,28 +70,25 @@ class PMVC
 				break;
 			}
 		}
-		if ($_GET['c'] || $_GET['a']) {
-			self::$r['c'] = $_GET['c'];
-			self::$r['a'] = $_GET['a'];
-		}
 		if (!self::$r['c']) self::$r['c'] = 'index';
 		if (!self::$r['a']) self::$r['a'] = 'index';
 		$c = ucfirst(self::$r['c']) . 'Controller';
 		$a = 'action' . ucfirst(self::$r['a']);
-		if (!class_exists($c)) {
+		if (!class_exists($c) && file_exists(self::$approot.'/controller/'.$c.'.php')) {
 			require self::$approot.'/controller/'.$c.'.php';
 		}
-		if (!class_exists($c)) {
-			$c = new ErrorController();
-			$c->actionIndex();
+		if (class_exists($c)) {
+			$c = new $c();
+		} else {
+			self::$r['c_real'] = 'p';
+			$c = new PController();
 		}
 		try {
-			$c = new $c();
 			$c->$a();
 		} catch (Exception $e) {
 			if ($e->getCode()==404) {
-				$c = new ErrorController();
-				$c->actionIndex();
+				self::$r['a_real'] = 'error';
+				$c->actionError();
 			} else {
 				throw $e;
 			}

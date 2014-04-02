@@ -1,56 +1,71 @@
 <?php
-class PController {
-	
+class PController
+{
 	protected $theme = 'default';
 	protected $layout = 'main';
 	protected $refer;
 	protected $ajax;
-	
+
 	protected $pgTitle = 'WebSite powered by polev/phpole';
 	protected $pgKeywords = '';
 	protected $pgDescription = '';
 	protected $lv = array(); // layout vars
 
-	function __construct() {
+	function __construct()
+	{
 		($this->refer=$_POST['refer']) || ($this->refer=urldecode($_GET['refer'])) || ($this->refer=$_SERVER['HTTP_REFERER']) || ($this->refer='/');
 		($this->ajax=isset($_POST['ajax'])) || ($this->ajax=isset($_GET['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']==='XMLHttpRequest'));
 		if (PCfg::$cfg['sitename']) $this->pgTitle = PCfg::$cfg['sitename'];
 		if (!$this->theme || ($this->theme!='default' && !is_dir(PMVC::$approot.'/theme/'.$this->theme))) $this->theme = 'default';
 		$this->before();
 	}
-	
-	function __destruct() {
+
+	function __destruct()
+	{
 		$this->after();
 	}
-	
-	function __call($func, $args) {
+
+	function __call($func, $args)
+	{
 		if (substr($func, 0, 6)=='action') {
 			throw new Exception('Action '.substr($func, 6).' not found!', 404);
 		} else {
 			throw new Exception('Method '.__CLASS__.'::'.$func.' not found!');
 		}
 	}
-	
-	function before() {}
-	
-	function after() {}
-	
-	function setTitle($s) {
+
+	function before()
+	{
+	}
+
+	function after()
+	{
+	}
+
+	function actionError()
+	{
+		$this->cmsg(1, '404');
+	}
+
+	function setTitle($s)
+	{
 		if ($s) $this->pgTitle = $s . ' - ' . $this->pgTitle;
 	}
-	
-	function redirect($s=NULL, $code=NULL) {
+
+	function redirect($s=NULL, $code=NULL)
+	{
 		if (!$s) $s = $this->refer;
 		if ($code==301) header('HTTP/1.1 301 Moved Permanently');
 		header('location: '.$s);
 		exit();
 	}
-	
-	function addError($a, $column, $form) {
+
+	function addError($a, $column, $form)
+	{
 		if ($this->ajax) die(json_encode($a));
 		else PMVC::$e[$form][$column] = $a;
 	}
-	
+
 	/**
 	 * 消息展示
 	 * @param int $status 状态 {0:失败, 1:提示, 2:成功}
@@ -60,7 +75,8 @@ class PController {
 	 * @param array $data
 	 * @param bool $ajax
 	 */
-	function cmsg($status, $msg, $urls = null, $time = 0, $data = array(), $ajax = null) {
+	function cmsg($status, $msg, $urls = null, $time = 0, $data = array(), $ajax = null)
+	{
 		if (is_null($ajax)) $ajax = $this->ajax;
 		if (is_null($urls)) $urls = array(array('link'=>$this->refer, 'title'=>'返回上一页'));
 		if (!is_array($urls)) $urls = array();
@@ -76,12 +92,14 @@ class PController {
 			die($this->renderFile(PMVC::$approot.'/view/cmsg.php', $data));
 		}
 	}
-	
-	protected function show($data=array(), $return=0) {
+
+	protected function show($data=array(), $return=0)
+	{
 		$this->render(PMVC::$r['c'].'/'.PMVC::$r['a'], $data, $return);
 	}
-	
-	protected function render($view='', $data=array(), $return=0) {
+
+	protected function render($view='', $data=array(), $return=0)
+	{
 		$content = $this->renderPartial($view, $data);
 		$data = array('content'=>$content);
 		$f = $this->getLayoutFile($this->layout);
@@ -99,17 +117,20 @@ class PController {
 		if ($return) return $s;
 		else exit($s);
 	}
-	
-	protected function renderPartial($view='', $data=array()) {
+
+	protected function renderPartial($view='', $data=array())
+	{
 		$f = $this->getViewFile($view);
 		return $this->renderFile($f, $data);
 	}
-	
-	protected function lib($s) {
+
+	protected function lib($s)
+	{
 		include $this->getViewFile($s, 'lib');
 	}
-	
-	private function renderFile($file, $data=array()) {
+
+	private function renderFile($file, $data=array())
+	{
 		foreach ($data as $k=>$v) $$k=$v;
 		ob_start();
 		include $file;
@@ -117,8 +138,9 @@ class PController {
 		ob_clean();
 		return $s;
 	}
-	
-	private function getViewFile($view, $type='page') {
+
+	private function getViewFile($view, $type='page')
+	{
 		$r = PMVC::$approot.'/view/'.$type.'/'.$view.'.php';
 		if ($this->theme != 'default') {
 			$r = PMVC::$approot.'/theme/'.$this->theme.'/'.$type.'/'.$view.'.php';
@@ -126,9 +148,9 @@ class PController {
 		if (!file_exists($r)) $r = PMVC::$approot.'/view/'.$type.'/'.$view.'.php';
 		return $r;
 	}
-	
-	private function getLayoutFile($layout) {
+
+	private function getLayoutFile($layout)
+	{
 		return $this->getViewFile($layout, 'layout');
 	}
-	
 }
