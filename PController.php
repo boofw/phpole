@@ -131,7 +131,9 @@ class PController
 
 	private function renderFile($file, $data=array())
 	{
-		foreach ($data as $k=>$v) $$k=$v;
+		foreach ($data as $k=>$v) {
+			$$k=$v;
+		}
 		ob_start();
 		include $file;
 		$s = ob_get_contents();

@@ -21,10 +21,12 @@ class PMVC
 	static $e = array();
 	static $v = array();
 	static $httpHost = '';
+	static $httpRemoteIp = '';
 
 	static function init($cfg = NULL)
 	{
 		(self::$httpHost = $_SERVER['HTTP_X_REAL_HOST']) || (self::$httpHost = $_SERVER['HTTP_HOST']);
+		(self::$httpRemoteIp = $_SERVER['HTTP_X_REAL_IP']) || (self::$httpRemoteIp = $_SERVER['REMOTE_ADDR']);
 
 		if (class_exists('PCfg')) {
 			PCfg::init($cfg);
