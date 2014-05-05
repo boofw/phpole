@@ -74,6 +74,7 @@ class PMVC
 		}
 		if (!self::$r['c']) self::$r['c'] = 'index';
 		if (!self::$r['a']) self::$r['a'] = 'index';
+		self::$r['r'] = self::$r['c'].'/'.self::$r['a'];
 		$c = ucfirst(self::$r['c']) . 'Controller';
 		$a = 'action' . ucfirst(self::$r['a']);
 		if (!class_exists($c) && file_exists(self::$approot.'/controller/'.$c.'.php')) {

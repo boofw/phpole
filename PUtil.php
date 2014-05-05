@@ -164,11 +164,15 @@ class PUtil {
 		return substr($email, 0, 1).$shadow.strrchr($email, '@');
 	}
 	
-	static function stripCss($s) {
-		$s = preg_replace('/\s+style\=\"[^\"]*\"/is', '', $s);
-		$s = preg_replace('/\s+style\=\'[^\']*\'/is', '', $s);
-		$s = preg_replace('/\s+class\=\"[^\"]*\"/is', '', $s);
-		$s = preg_replace('/\s+class\=\'[^\']*\'/is', '', $s);
+	static function stripCss($s, $stripAttrs=array('style', 'class')) {
+		if (in_array('style', $stripAttrs)) {
+			$s = preg_replace('/\s+style\=\"[^\"]*\"/is', '', $s);
+			$s = preg_replace('/\s+style\=\'[^\']*\'/is', '', $s);
+		}
+		if (in_array('class', $stripAttrs)) {
+			$s = preg_replace('/\s+class\=\"[^\"]*\"/is', '', $s);
+			$s = preg_replace('/\s+class\=\'[^\']*\'/is', '', $s);
+		}
 		$s = preg_replace('/\s+on[^\=]+\=\"[^\"]*\"/is', '', $s);
 		$s = preg_replace('/\s+on[^\=]+\=\'[^\']*\'/is', '', $s);
 		$s = preg_replace('/<script.*?<\/script>/is', '', $s);

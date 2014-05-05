@@ -104,6 +104,7 @@ class PDAO
 			$q->execute(array($where));
 			$res = $q->fetch(PDO::FETCH_ASSOC);
 		}
+		if (!is_array($res)) $res = array();
 		return $res;
 	}
 
@@ -244,6 +245,8 @@ class PDAO
 		$sql = "select * from `{$this->fullname}`";
 		if ($where[0]) $sql .= " where {$where[0]}";
 		if ($order) $sql .= " order by ".implode(',', $order);
+		$num = intval($num);
+		$offset = intval($offset);
 		if ($num) $sql .= " limit $offset,$num";
 		$q = $this->db->prepare($sql);
 		$q->execute($where[1]);
