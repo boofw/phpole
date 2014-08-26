@@ -1,6 +1,14 @@
 <?php
-class PArray {
-
+class PArray
+{
+	static function get($array, $key, $default=NULL) {
+		return (isset($array[$key])) ? $array[$key] : $default;
+	}
+	
+	static function getTrue($array, $key, $default=NULL) {
+		return (isset($array[$key]) && $array[$key]) ? $array[$key] : $default;
+	}
+	
 	/**
 	 * 数组按指定的column过滤
 	 * @param $array
@@ -124,10 +132,6 @@ class PArray {
 			}
 		}
 		return $r;
-	}
-
-	static function getTrue($array, $key, $default=NULL) {
-		return (isset($array[$key]) && $array[$key]) ? $array[$key] : $default;
 	}
 
 	/**
