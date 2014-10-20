@@ -159,10 +159,12 @@ class PDAO
 	/**
 	 * 新增数据
 	 * @param array $data 数据数组
-	 * @return array (0=>#last_id#, 1=>#影响的行数#)
+	 * @return int 自增id#last_id#
 	 */
 	public function add($data) {
-		return $this->set($data);
+		$r = $this->set($data);
+		if (!$r[1]) return NULL;
+		return $r[0];
 	}
 
 	/**

@@ -20,7 +20,8 @@ class PUtil {
 	}
 
 	static function subtxt($s, $len=0) {
-		$s = html_entity_decode(strip_tags($s));
+		$s = strip_tags($s);
+		$s = strip_tags(html_entity_decode($s));
 		$s = str_replace(array('　',"\n","\r","\t"), ' ', $s);
 		$s = preg_replace('/\s{2,}/', ' ', $s);
 		$s = trim($s);
@@ -36,6 +37,7 @@ class PUtil {
 		$s = str_replace('<br', "\n<br", $s);
 		$s = str_replace('<li', "\n<li", $s);
 		$s = strip_tags($s);
+		$s = strip_tags(html_entity_decode($s));
 		$s = str_replace("\r", "\n", $s);
 		$s = preg_replace('/\n{2,}/', "\n", $s);
 		$s = trim($s);
