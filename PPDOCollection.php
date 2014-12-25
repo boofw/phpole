@@ -148,12 +148,13 @@ class PPDOCollection
                         $xwhere[] = "`$k`>={$psk}{$dep}d{$i}";
                         $input_parameters[$psk.$dep.'d'.$i] = $cv;
                     }
+                    $i++;
                 }
             } else {
                 $xwhere[] = "`$k`={$psk}{$dep}d{$i}";
                 $input_parameters[$psk.$dep.'d'.$i] = $v;
+                $i++;
             }
-            $i++;
         }
         $wherestr = implode(' and ', $xwhere);
         if ($wherestr) $wherestr = '('.$wherestr.')';
