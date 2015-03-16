@@ -28,7 +28,7 @@ class PUtil {
 		if ($len) $s = mb_substr($s, 0, $len, 'utf-8');
 		return $s;
 	}
-	
+
 	static function subtxtbr($s, $len=0) {
 		$s = nl2br($s);
 		$s = preg_replace('/\s{2,}/', ' ', $s);
@@ -58,11 +58,23 @@ class PUtil {
 		return $out;
 	}
 
+	static function xx2dec($key, $base=62)
+	{
+		$index = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$map = array_flip(str_split($index));
+		$t = strlen($key);
+		$out = 0;
+		for ($i=0; $i<$t; $i++) {
+			$out += $map[substr($key, $i, 1)] * pow($base, $t-$i-1);
+		}
+		return $out;
+	}
+
 	static function hex36($hex) {
 		$n = hexdec($hex);
 		return self::dec2xx($n, 36);
 	}
-	
+
 	static function pager($data, $baseurl = '', $pageicon = 10, $type = 2, $pagekey = 'page') {
 		$s = '';
 		$ux = parse_url($baseurl);
@@ -80,7 +92,7 @@ class PUtil {
 		if ($max>$data['pagemax']+1) $max=$data['pagemax']+1;
 		$min = $max-$pageicon;
 		if ($min<1) $min=1;
-	
+
 		if (!$type) {
 			if ($data['page']<2) $dispre .= ' class="disabled"';
 			$curp = $data['page']-1;
@@ -114,11 +126,11 @@ class PUtil {
 			}
 			$s .= '<li'.$disend.'><a href="'.$baseurl.($data['page']+1).'" data-page="'.($data['page']+1).'">»</a></li>';
 		}
-	
+
 		if ($s) $s = '<ul>'.$s.'</ul>';
 		return $s;
 	}
-	
+
 	static function num2str($num, $max=999) {
 		$r = $num.'';
 		if ($max<10 && $num>9) $r = '9+';
@@ -129,11 +141,11 @@ class PUtil {
 		}
 		return $r;
 	}
-	
+
 	static function qrcode($str, $size='200x200') {
 		return 'http://chart.apis.google.com/chart?chs='.$size.'&cht=qr&chld=L|0&chl='.urlencode($str);
 	}
-	
+
 	static function getEmailUrl($email)
 	{
 		$mailurls = array(
@@ -156,7 +168,7 @@ class PUtil {
 		if ($mailurls[$mx]) return $mailurls[$mx];
 		else return 'javascript:;';
 	}
-	
+
 	static function hideEmail($email) {
 		$shadow = '';
 		$len = strpos($email, '@');
@@ -165,7 +177,7 @@ class PUtil {
 		}
 		return substr($email, 0, 1).$shadow.strrchr($email, '@');
 	}
-	
+
 	static function stripCss($s, $stripAttrs=array('style', 'class')) {
 		if (in_array('style', $stripAttrs)) {
 			$s = preg_replace('/\s+style\=\"[^\"]*\"/is', '', $s);
@@ -183,7 +195,7 @@ class PUtil {
 		$s = preg_replace('/<link.*?>/is', '', $s);
 		return $s;
 	}
-	
+
 	static function mkListData($array, $k='id', $v='name', $pre=null) {
 		if (!is_array($array)) $array = array();
 		$r = array();
@@ -193,9 +205,9 @@ class PUtil {
 		}
 		return $r;
 	}
-	
+
 	static function urlArgs($a, $uri=null) {
-			
+
 		if (!$uri) $uri = $_SERVER['REQUEST_URI'];
 		$ux = parse_url($uri);
 		parse_str($ux['query'], $uargs);
@@ -206,7 +218,7 @@ class PUtil {
 		if ($ux['fragment']) $r .= '#'.$ux['fragment'];
 		return $r;
 	}
-	
+
 	static function urlDelArg($a, $uri=null) {
 		if (!$uri) $uri = $_SERVER['REQUEST_URI'];
 		$ux = parse_url($uri);
