@@ -18,9 +18,9 @@ class PAuthController extends PController {
 				$returnUrl = $_SERVER['REQUEST_URI'];
 			}
 			$_SESSION['loginrefer'] = $returnUrl;
-			$this->redirect('/auth/login');
+			return PResponse::redirect('/auth/login');
 		} elseif (is_string($returnUrl) && $returnUrl) {
-			$this->redirect($returnUrl);
+			return PResponse::redirect($returnUrl);
 		}
 	}
 
@@ -33,11 +33,11 @@ class PAuthController extends PController {
 	function loginRefer() {
 		($refer=$_SESSION['loginrefer']) || ($refer=$this->refer);
 		unset($_SESSION['loginrefer']);
-		$this->redirect($refer);
+		return PResponse::redirect($refer);
 	}
-	
+
 	function setLoginReferUri($uri=NULL, $force=TRUE) {
-		if (!$uri) $uri = $this->refer;
+		if (!$uri) $uri = PRequest::refer();
 		if (!$_SESSION['loginrefer'] || $force) $_SESSION['loginrefer'] = $uri;
 	}
 
