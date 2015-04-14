@@ -4,11 +4,30 @@ class PArray
 	static function get($array, $key, $default=NULL) {
 		return (isset($array[$key])) ? $array[$key] : $default;
 	}
-	
+
 	static function getTrue($array, $key, $default=NULL) {
 		return (isset($array[$key]) && $array[$key]) ? $array[$key] : $default;
 	}
-	
+
+	static function dot($array, $prepend = '')
+	{
+	    $results = array();
+
+	    foreach ($array as $key => $value)
+	    {
+	        if (is_array($value))
+	        {
+	            $results = array_merge($results, static::dot($value, $prepend.$key.'.'));
+	        }
+	        else
+	        {
+	            $results[$prepend.$key] = $value;
+	        }
+	    }
+
+	    return $results;
+	}
+
 	/**
 	 * 数组按指定的column过滤
 	 * @param $array
