@@ -1,5 +1,7 @@
 <?php namespace Polev\Phpole\Mvc;
 
+use Polev\Phpole\Helper\Arr;
+
 class Controller
 {
     static $controllerDir = '';
@@ -35,6 +37,9 @@ class Controller
         }
         if (class_exists($c)) {
             $a = 'get' . ucfirst(Route::$action);
+            if (Arr::get($_SERVER, 'REQUEST_METHOD')==='POST') {
+                $a = 'post' . ucfirst(Route::$action);
+            }
             $c = new $c();
             echo $c->$a();
         } else {
