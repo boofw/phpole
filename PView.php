@@ -13,7 +13,7 @@ class PView
         if ($theme) {
             self::$theme = $theme;
         }
-        if (!is_dir(PMVC::$approot.'/theme/'.$this->theme)) {
+        if (!is_dir(PMVC::$approot.'/theme/'.self::$theme)) {
             self::$theme = '';
         }
         return self::$theme;
