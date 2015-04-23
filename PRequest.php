@@ -25,9 +25,7 @@ class PRequest
     static function ip()
     {
         if (is_null(self::$ip)) {
-            self::$ip = PArray::get($_SERVER, 'HTTP_X_REAL_IP') ?: PArray::get($_SERVER, 'REMOTE_ADDR');
-        } else {
-            self::$ip = '';
+            self::$ip = PArray::get($_SERVER, 'HTTP_X_REAL_IP') ?: PArray::get($_SERVER, 'REMOTE_ADDR', '0.0.0.0');
         }
         return self::$ip;
     }
@@ -35,9 +33,7 @@ class PRequest
     static function domain()
     {
         if (is_null(self::$domain)) {
-            self::$domain = PArray::get($_SERVER, 'HTTP_X_REAL_HOST') ?: PArray::get($_SERVER, 'HTTP_HOST');
-        } else {
-            self::$domain = '';
+            self::$domain = PArray::get($_SERVER, 'HTTP_X_REAL_HOST') ?: PArray::get($_SERVER, 'HTTP_HOST', '');
         }
         return self::$domain;
     }
