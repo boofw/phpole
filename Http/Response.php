@@ -6,9 +6,8 @@ class Response
 {
     static function redirect($s = null, $withInput = false, $flashData = [])
     {
-        $flashData = Arr::dot($flashData);
         if ($withInput) {
-            $flashData = Arr::add($flashData, '_old_input', $_REQUEST);
+            Input::flash();
         }
         foreach ($flashData as $k=>$v) {
             Session::flash($k, $v);
