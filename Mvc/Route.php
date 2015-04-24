@@ -33,14 +33,15 @@ class Route
                     unset($args['a']);
                     if ($args['v']) {
                         $moreArgs = explode('/', trim($args['v'], '/'));
+                        unset($args['v']);
                         for ($i=0; $i<count($moreArgs); $i=$i+2) {
                             if (!is_numeric($moreArgs[$i]) && !(preg_match('/^\$[1-9]$/', $moreArgs[$i]) && !$moreArgs[$i+1])) {
                                 $args[$moreArgs[$i]] = $moreArgs[$i+1];
                             }
                         }
                     }
-                    unset($args['v']);
                     $_GET = array_merge($_GET, $args);
+                    $_REQUEST = array_merge($_REQUEST, $args);
                 }
                 break;
             }
