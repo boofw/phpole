@@ -1,7 +1,7 @@
 polev/phpole
 =============
 
-一些常用的工具类
+PHP Development Toolkit
 
 ```
 依赖关系
@@ -35,6 +35,21 @@ WebService
  - PService
  - PDbService
  - PApiClient
+```
+
+Installation
+--------------
+
+* when PHP version >= 5.4
+
+```
+composer require polev/phpole:dev-develop
+```
+
+* when PHP version >= 5.0
+
+```
+composer require polev/phpole:dev-conserved
 ```
 
 Installation
