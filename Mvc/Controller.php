@@ -1,6 +1,8 @@
 <?php namespace Polev\Phpole\Mvc;
 
 use Polev\Phpole\Helper\Arr;
+use Polev\Phpole\Exception\HttpException;
+use Polev\Phpole\Exception\AppException;
 
 class Controller
 {
@@ -14,6 +16,15 @@ class Controller
     function __destruct()
     {
         $this->after();
+    }
+
+    function __call($func, $args)
+    {
+        if (preg_match('/^(get|post)[A-Z][a-z]*$/', $func)) {
+            throw new HttpException(404);
+        } else {
+            throw new AppException('Method '.__CLASS__.'::'.$func.' not found!');
+        }
     }
 
     function before()
@@ -43,7 +54,7 @@ class Controller
             $c = new $c();
             echo $c->$a();
         } else {
-            echo 404;
+            throw new HttpException(404);
         }
     }
 }
