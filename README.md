@@ -52,10 +52,10 @@ composer require polev/phpole:dev-develop
 composer require polev/phpole:dev-conserved
 ```
 
-Installation
+Autoload
 --------------
 
-* php5.3 以上环境
+* when PHP version >= 5.3
 
 ```
 composer install
@@ -63,7 +63,7 @@ composer install
 require 'vendor/autoload.php';
 ```
 
-* php5.2 及以下环境
+* when PHP version >= 5.0
 
 ```
 composer install
