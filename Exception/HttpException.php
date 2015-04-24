@@ -65,6 +65,7 @@ class HttpException extends Exception
     public function __construct ($message = null, $code = null, $previous = null)
     {
         $this->code = $message;
-        header('HTTP/1.1 '.$message.' '.self::$codeMessage[$message]);
+        $this->message = self::$codeMessage[$message];
+        header('HTTP/1.1 '.$this->code.' '.$this->message);
     }
 }
