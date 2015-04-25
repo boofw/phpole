@@ -35,11 +35,6 @@ class Controller
     {
     }
 
-    static function show($data = [])
-    {
-        return View::render(Route::$controller.'/'.Route::$action, $data);
-    }
-
     static function run()
     {
         $c = ucfirst(Route::$controller) . 'Controller';

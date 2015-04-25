@@ -4,7 +4,7 @@ use Polev\Phpole\Helper\Arr;
 
 class Response
 {
-    static function redirect($s = null, $withInput = false, $flashData = [])
+    static function redirect($uri = null, $withInput = false, $flashData = [])
     {
         if ($withInput) {
             Input::flash();
@@ -13,17 +13,17 @@ class Response
             Session::flash($k, $v);
         }
 
-        if (!$s) {
-            $s = Request::referer();
+        if (!$uri) {
+            $uri = Request::referer();
         }
-        header('location: '.$s);
-        return '<p>This page is moved to <a href="'.$s.'">'.$s.'</a></p>';
+        header('location: '.$uri);
+        return '<p>This page is moved to <a href="'.$uri.'">'.$uri.'</a></p>';
     }
 
-    static function redirectPermanently($s = null)
+    static function redirectPermanently($uri = null)
     {
         header('HTTP/1.1 301 Moved Permanently');
-        return self::redirect($s);
+        return self::redirect($uri);
     }
 
     static function json($data = [])
@@ -32,11 +32,25 @@ class Response
         return json_encode($data);
     }
 
-    static function to($uri, $cmsg = [], $withInput = false)
+    static function to($code, $message, $uri = null, $withInput = false, $data = [])
     {
+        if (!$uri) {
+            $uri = Request::referer();
+        }
+        $cmsg = compact('code', 'message', 'uri', 'data');
         if (Request::ajax()) {
             return self::json($cmsg);
         }
         return self::redirect($uri, $withInput, ['cmsg' => $cmsg]);
+    }
+
+    static function success($message, $uri = null, $withInput = false, $data = [])
+    {
+        return self::to(1, $message, $uri, $withInput, $data);
+    }
+
+    static function error($message, $uri = null, $withInput = false, $data = [])
+    {
+        return self::to(0, $message, $uri, $withInput, $data);
     }
 }

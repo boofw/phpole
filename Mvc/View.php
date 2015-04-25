@@ -62,4 +62,9 @@ class View
         }
         return $content;
     }
+
+    static function show($data = [])
+    {
+        return self::render(Route::$controller.'/'.Route::$action, $data);
+    }
 }
