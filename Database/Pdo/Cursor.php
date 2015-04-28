@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Database;
+<?php namespace Polev\Phpole\Database\Pdo;
 
 use PDO;
 use Iterator;
