@@ -2,6 +2,28 @@
 
 class Db
 {
+    /**
+     * @var array $config
+     * array(
+            'dawn' => array(
+                'driver' => 'mongo',
+                'server' => 'mongodb://127.0.0.1',
+                'options' => array(
+                    'username' => false,
+                ),
+                'db' => 'config',
+                'prefix' => '',
+            ),
+            'test' => array(
+                'driver' => 'pdo',
+                'dsn' => 'mysql:host=localhost;dbname=test',
+                'username' => 'root',
+                'passwd' => 'root',
+                'options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
+                'prefix' => 'bs_',
+            ),
+       );
+     */
     static $config = [];
 
     private static $pool = [];
@@ -16,6 +38,7 @@ class Db
         list($db, $table) = explode('.', $name);
         if (array_key_exists($db, self::$config)) {
             $config = self::$config[$db];
+            if (array_key_exists('prefix', $config) && $config['prefix']) $table = $config['prefix'].$table;
             if ($config['driver'] === 'mongo') {
                 $mongoClient = new \MongoClient($config['server'], $config['options']);
                 $this->collection = $mongoClient->selectCollection($config['db'], $table);
