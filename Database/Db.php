@@ -79,12 +79,13 @@ class Db
 
     function insert($a)
     {
-        // @todo
+        return $this->collection->insert($a);
     }
 
     function update($criteria, $new_object, $options = [])
     {
-        // @todo
+        if (array_key_exists('multiple', $options)) $options['multiple'] = 1;
+        return $this->collection->update($criteria, $new_object, $options);
     }
 
     function upsert($criteria, $new_object, $options = [])
@@ -94,6 +95,16 @@ class Db
 
     function remove($criteria, $options = [])
     {
-        // @todo
+        return $this->collection->remove($criteria, $options);
+    }
+
+    function page($query = [], $fields = [], $sort = null, $page = 1, $pagesize = 50)
+    {
+        if ($page < 1) $page = 1;
+        $skip = ($page - 1) * $pagesize;
+        $total = $this->count($query);
+        $data = $this->all($query, $fields, $sort, $pagesize, $skip);
+        $pagemax = ceil($total / $pagesize);
+        return ['data' => $data, 'pager' => compact('total', 'page', 'pagesize', 'pagemax')];
     }
 }
