@@ -34,9 +34,6 @@ class Response
 
     static function to($code, $message, $uri = null, $withInput = false, $data = [])
     {
-        if (!$uri) {
-            $uri = Request::referer();
-        }
         $cmsg = compact('code', 'message', 'uri', 'data');
         if (Request::ajax()) {
             return self::json($cmsg);
