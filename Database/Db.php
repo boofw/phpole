@@ -49,8 +49,14 @@ class Db
         }
     }
 
+    /**
+     * Db init
+     * @param $name
+     * @return \Polev\Phpole\Database\Db
+     */
     static function init($name)
     {
+        if (strpos($name, '.') === false) $name = 'default.'.$name;
         if (array_key_exists($name, self::$pool)) {
             return self::$pool[$name];
         }
