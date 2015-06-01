@@ -48,4 +48,38 @@ class Validator
     {
         if ( ! $this->currentValue) return $this->currentLabel.'必需填写';
     }
+
+    function sometimes()
+    {
+    }
+
+    function email()
+    {
+        if ( ! filter_var($this->currentValue, FILTER_VALIDATE_EMAIL)) return $this->currentLabel.'不正确';
+    }
+
+    function cellphone()
+    {
+        if ( ! preg_match('/^1[3-8][0-9]{9}$/', $this->currentValue)) return $this->currentLabel.'不正确';
+    }
+
+    function max($max)
+    {
+        if ($this->currentValue > $max) return $this->currentLabel.'不符合要求';
+    }
+
+    function min($min)
+    {
+        if ($this->currentValue < $min) return $this->currentLabel.'不符合要求';
+    }
+
+    function length_max($max)
+    {
+        if (mb_strlen($this->currentValue) > $max) return $this->currentLabel.'太长了';
+    }
+
+    function length_min($min)
+    {
+        if (mb_strlen($this->currentValue) < $min) return $this->currentLabel.'太短了';
+    }
 }
