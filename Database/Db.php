@@ -90,7 +90,7 @@ class Db
 
     function update($criteria, $new_object, $options = [])
     {
-        if (array_key_exists('multiple', $options)) $options['multiple'] = 1;
+        if ( ! array_key_exists('multiple', $options)) $options['multiple'] = 1;
         return $this->collection->update($criteria, $new_object, $options);
     }
 
