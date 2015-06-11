@@ -18,8 +18,9 @@ class Route
         if (!is_array(self::$routes)) {
             self::$routes = array();
         }
-        self::$routes['/^\/([\w]+)\/([\w]+)([\/\?]{1}.*)?$/'] = 'c=$1&a=$2&v=$3';
-        self::$routes['/^\/([\w]+)([\/\?]{1}.*)?$/'] = 'c=$1&a=index&v=$2';
+        self::$routes['/^\/([\w]+)\/(\d+)(\/.*)?$/'] = 'c=$1&a=show&id=$2&v=$3';
+        self::$routes['/^\/([\w]+)\/([\w]+)\/(\d+)(\/.*)?$/'] = 'c=$1&a=$2&id=$3&v=$4';
+        self::$routes['/^\/([\w]+)\/([\w]+)(\/.*)?$/'] = 'c=$1&a=$2&v=$3';
         foreach (self::$routes as $rk=>$rv) {
             if (preg_match($rk, $uri, $m)) {
                 foreach ($m as $mk=>$mv) {
