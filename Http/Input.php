@@ -35,10 +35,10 @@ class Input
         return (bool) self::get($k);
     }
 
-    static function get($k)
+    static function get($k, $default = null)
     {
         self::init();
-        return Arr::get(self::$data, $k);
+        return Arr::get(self::$data, $k, $default);
     }
 
     static function flash()

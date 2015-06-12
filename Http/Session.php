@@ -5,7 +5,7 @@ use Polev\Phpole\Helper\Arr;
 class Session
 {
     private static $started = false;
-    private static $flash = [];
+    static $flash = [];
 
     private static function init()
     {
