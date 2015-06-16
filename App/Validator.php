@@ -36,8 +36,10 @@ class Validator
                     $this->currentField = $field;
                     $this->currentValue = $this->values[$field];
                     $this->currentLabel = $params['label'];
-                    $error = call_user_func_array([$this, $func], $params['params']);
-                    if (is_string($error)) $this->errors[$field] = $error;
+                    if ($this->currentValue > '' || $func === 'required') {
+                        $error = call_user_func_array([$this, $func], $params['params']);
+                        if (is_string($error)) $this->errors[$field] = $error;
+                    }
                 }
             }
         }
