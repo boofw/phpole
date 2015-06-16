@@ -47,15 +47,15 @@ class Session
         return $_SESSION;
     }
 
-    static function get($k)
+    static function get($k, $default = null)
     {
         self::init();
-        return Arr::get(self::$flash, $k, Arr::get($_SESSION, $k));
+        return Arr::get(self::$flash, $k, Arr::get($_SESSION, $k, $default));
     }
 
-    static function pull($k)
+    static function pull($k, $default = null)
     {
-        $v = self::get($k);
+        $v = self::get($k, $default);
         self::forget($k);
         return $v;
     }

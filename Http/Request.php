@@ -20,9 +20,15 @@ class Request
     static function referer()
     {
         if (is_null(self::$referer)) {
-            (self::$referer = Arr::get($_POST, 'referer')) || (self::$referer = urldecode(Arr::get($_GET, 'referer'))) || (self::$referer = Arr::get($_SERVER, 'HTTP_REFERER', '/'));
+            (self::$referer = self::refererInInput()) || (self::$referer = Arr::get($_SERVER, 'HTTP_REFERER', '/'));
         }
         return self::$referer;
+    }
+
+    static function refererInInput()
+    {
+        ($referer = Arr::get($_POST, 'referer')) || ($referer = urldecode(Arr::get($_GET, 'referer')));
+        return $referer;
     }
 
     static function ip()
