@@ -25,7 +25,7 @@ class Session
 
     static function flash($k, $v)
     {
-        return self::put('_flash.'.$k, $v);
+        self::put('_flash.'.$k, $v);
     }
 
     static function has($k)
