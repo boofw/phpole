@@ -8,8 +8,11 @@ class Controller
 {
     static $controllerDir = '';
 
+    protected $filters = [];
+
     function __construct()
     {
+        $this->filter();
         $this->before();
     }
 
@@ -35,6 +38,14 @@ class Controller
     {
     }
 
+    function filter($action = '')
+    {
+        $filters = Arr::get($this->filters, $action, []);
+        foreach ($filters as $v) {
+            Filter::run($v);
+        }
+    }
+
     static function run()
     {
         $c = ucfirst(Route::$controller) . 'Controller';
@@ -47,6 +58,7 @@ class Controller
                 $a = 'post' . ucfirst(Route::$action);
             }
             $c = new $c();
+            $c->filter($a);
             echo $c->$a();
         } else {
             throw new HttpException(404);
