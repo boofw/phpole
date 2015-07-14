@@ -85,7 +85,7 @@ class Cursor implements Iterator
 
     function rewind ()
     {
-        $this->PDOStatement = $this->pdo->prepare($this->sql.$this->ordersql.$this->limitsql);
+        $this->PDOStatement = $this->pdo->prepare($this->sql.' '.$this->ordersql.' '.$this->limitsql);
         $this->PDOStatement->execute($this->params);
         $this->PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $this->position = 0;
