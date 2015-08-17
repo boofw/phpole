@@ -12,7 +12,7 @@ class Route
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $root = dirname($_SERVER['DOCUMENT_URI']);
-        if ($root != '/') {
+        if ($root !== DIRECTORY_SEPARATOR) {
             $uri = substr($uri, strlen($root));
         }
         list($uri,) = explode('?', $uri);

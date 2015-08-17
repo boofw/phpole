@@ -1,6 +1,6 @@
 <?php namespace Polev\Phpole\Database;
 
-class Db
+class Database
 {
     /**
      * @var array $config
@@ -42,17 +42,21 @@ class Db
             if ($config['driver'] === 'mongo') {
                 $mongoClient = new \MongoClient($config['server'], $config['options']);
                 $this->collection = $mongoClient->selectCollection($config['db'], $table);
-            } else {
+            } elseif ($config['driver'] === 'pdo') {
                 $pdo = new \PDO($config['dsn'], $config['username'], $config['passwd'], $config['options']);
                 $this->collection = new \Polev\Phpole\Database\Pdo\Collection($pdo, $table);
+            } else {
+                throw new AppException('Database driver <'.$config['driver'].'> not found!');
             }
+        } else {
+            throw new AppException('Database handle <'.$name.'> not found!');
         }
     }
 
     /**
-     * Db init
+     * Database init
      * @param $name
-     * @return \Polev\Phpole\Database\Db
+     * @return \Polev\Phpole\Database\Database
      */
     static function init($name)
     {
