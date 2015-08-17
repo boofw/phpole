@@ -47,32 +47,32 @@ class Cache
 
     static function put($k, $v, $minutes = 0)
     {
-        $this->store->put($k, $v, $minutes);
+        self::init()->store->put($k, $v, $minutes);
     }
 
     static function forever($k, $v)
     {
-        $this->store->put($k, $v);
+        self::init()->store->put($k, $v);
     }
 
     static function get($k)
     {
-        $r = $this->store->get($k);
+        $r = self::init()->store->get($k);
         return json_decode($r, 1);
     }
 
     static function forget($k)
     {
-        $this->store->forget($k);
+        self::init()->store->forget($k);
     }
 
     static function increment($k, $step = 1)
     {
-        return $this->store->increment($k, $step);
+        return self::init()->store->increment($k, $step);
     }
 
     static function decrement($k, $step = 1)
     {
-        return $this->store->decrement($k, $step);
+        return self::init()->store->decrement($k, $step);
     }
 }
