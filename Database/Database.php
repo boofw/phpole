@@ -82,6 +82,11 @@ class Database
         return $r;
     }
 
+    function in($key, $values)
+    {
+        return $this->all([$key => ['$in' => $values]]);
+    }
+
     function count($query = [])
     {
         return $this->collection->count($query);

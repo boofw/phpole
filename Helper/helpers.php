@@ -1,0 +1,230 @@
+<?php
+
+if ( ! function_exists('query_url'))
+{
+    function query_url($parameters, $path = null)
+    {
+        if (is_null($path)) {
+            $url = $_SERVER['REQUEST_URI'];
+        } else {
+            $url = url($path);
+        }
+
+        $ux = parse_url($url);
+        parse_str(array_get($ux, 'query'), $uargs);
+
+        foreach ($uargs as $k => $v) {
+            if (starts_with($k, '/')) {
+                unset($uargs[$k]);
+            }
+        }
+
+        if (isset($uargs['page'])) {
+            unset($uargs['page']);
+        }
+
+        $uargs = array_merge($uargs, $parameters);
+
+        if (array_get($uargs, 'page') == 1) {
+            unset($uargs['page']);
+        }
+
+        foreach ($parameters as $k => $v) {
+            if (is_null($v)) {
+                unset($uargs[$k]);
+            }
+        }
+
+        $ux['query'] = http_build_query($uargs);
+
+        $r = '';
+
+        if (array_get($ux, 'scheme') && array_get($ux, 'host')) {
+            $r .= $ux['scheme'] . '://' . $ux['host'];
+        }
+
+        if (array_get($ux, 'path')) {
+            $r .= $ux['path'];
+        }
+
+        if (array_get($ux, 'query')) {
+            $r .= '?' . $ux['query'];
+        }
+
+        if (array_get($ux, 'fragment')) {
+            $r .= '#'.$ux['fragment'];
+        }
+        return $r;
+    }
+}
+
+if ( ! function_exists('date_to_timestamp'))
+{
+    function date_to_timestamp($date)
+    {
+        if (is_numeric($date)) {
+            return $date;
+        }
+        return strtotime($date);
+    }
+}
+
+if ( ! function_exists('date_for_humans'))
+{
+    function date_for_humans($time, $now = null)
+    {
+        $time = date_to_timestamp($time);
+        if ($now) {
+            $now = date_to_timestamp($now);
+            $now = Carbon::createFromTimestamp($now);
+        }
+        $r = Carbon::createFromTimestamp($time)->diffForHumans($now);
+        $r = str_replace(' seconds', '秒', $r);
+        $r = str_replace(' minutes', '分钟', $r);
+        $r = str_replace(' hours', '小时', $r);
+        $r = str_replace(' days', '天', $r);
+        $r = str_replace(' weeks', '周', $r);
+        $r = str_replace(' months', '个月', $r);
+        $r = str_replace(' years', '年', $r);
+        $r = str_replace(' second', '秒', $r);
+        $r = str_replace(' minute', '分钟', $r);
+        $r = str_replace(' hour', '小时', $r);
+        $r = str_replace(' day', '天', $r);
+        $r = str_replace(' week', '周', $r);
+        $r = str_replace(' month', '个月', $r);
+        $r = str_replace(' year', '年', $r);
+        $r = str_replace(' from now', '后', $r);
+        $r = str_replace(' ago', '前', $r);
+        $r = str_replace(' after', '后', $r);
+        $r = str_replace(' before', '前', $r);
+        return $r;
+    }
+}
+
+if ( ! function_exists('pager_links'))
+{
+    function pager_links($data, $linksCount = 10, $pageKey = 'page')
+    {
+        if ($data['page'] < 1) {
+            $data['page'] = 1;
+        }
+        $half = floor(($linksCount - 1) / 2);
+        $min = $data['page'] - $half;
+        if ($min < 1) {
+            $min = 1;
+        }
+        $max = $min + $linksCount;
+        if ($max > $data['pages'] + 1) {
+            $max = $data['pages'] + 1;
+        }
+        $min = $max - $linksCount;
+        if ($min < 1) {
+            $min=1;
+        }
+
+        $s = '';
+        if ($data['page']>1) {
+            $s .= '<a href="'.query_url(['page'=>1]).'">首页</a>';
+            $s .= '<a href="'.query_url(['page'=>$data['page']-1]).'">上页</a>';
+        } else {
+            $s .= '<a href="'.query_url(['page'=>1]).'" class="no">首页</a>';
+            $s .= '<a href="'.query_url(['page'=>1]).'" class="no">上页</a>';
+        }
+        for ($i = $min; $i < $max; $i++) {
+            $onstat = '';
+            if($i == $data['page']) {
+                $onstat = ' class="on"';
+            }
+            $s .= '<a href="'.query_url(['page'=>$i]).'"'.$onstat.'>'.$i.'</a>';
+        }
+        if ($data['page'] < $data['pages']) {
+            $s .= '<a href="'.query_url(['page'=>$data['page']+1]).'">下页</a>';
+            $s .= '<a href="'.query_url(['page'=>$data['pages']]).'">尾页</a>';
+        } else {
+            $s .= '<a href="'.query_url(['page'=>$data['page']+1]).'" class="no">下页</a>';
+            $s .= '<a href="'.query_url(['page'=>$data['pages']]).'" class="no">尾页</a>';
+        }
+        return $s;
+    }
+}
+
+if ( ! function_exists('xml_to_array'))
+{
+    function xml_to_array($data)
+    {
+        $data = simplexml_load_string($data, null, LIBXML_NOCDATA);
+        $data = json_decode(json_encode($data), 1);
+        if ( ! is_array($data)) $data = [];
+        return $data;
+    }
+}
+
+if ( ! function_exists('D'))
+{
+    /**
+     * db::table handle
+     * @param $name
+     * @return \Polev\Phpole\Database\Database
+     */
+    function D($name)
+    {
+        return \Polev\Phpole\Database\Database::init($name);
+    }
+}
+
+if ( ! function_exists('view_extend'))
+{
+    function view_extend($layout)
+    {
+        \Polev\Phpole\Mvc\View::extend($layout);
+    }
+}
+
+if ( ! function_exists('session'))
+{
+    function session($k, $default = '')
+    {
+        return \Polev\Phpole\Http\Session::get($k, $default);
+    }
+}
+
+if ( ! function_exists('config'))
+{
+    function config($k, $default = '')
+    {
+        return \Polev\Phpole\App\Config::get($k, $default);
+    }
+}
+
+if ( ! function_exists('input'))
+{
+    function input($k, $default = '')
+    {
+        return \Polev\Phpole\Http\Input::get($k, $default);
+    }
+}
+
+if ( ! function_exists('view'))
+{
+    function view($data = [], $view = null)
+    {
+        if ($view) return \Polev\Phpole\Mvc\View::render($view, $data);
+        return \Polev\Phpole\Mvc\View::show($data);
+    }
+}
+
+if ( ! function_exists('success'))
+{
+    function success($message, $uri = null, $withInput = false, $data = [])
+    {
+        return \Polev\Phpole\Http\Response::success($message, $uri, $withInput, $data);
+    }
+}
+
+if ( ! function_exists('error'))
+{
+    function error($message, $uri = null, $withInput = false, $data = [])
+    {
+        return \Polev\Phpole\Http\Response::error($message, $uri, $withInput, $data);
+    }
+}

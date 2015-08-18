@@ -140,6 +140,13 @@ class Collection
                     } elseif ($ck=='$gte') {
                         $xwhere[] = "`$k`>={$psk}{$dep}d{$i}";
                         $input_parameters[$psk.$dep.'d'.$i] = $cv;
+                    } elseif ($ck=='$in') {
+                        $inckarr = [];
+                        foreach ($cv as $inck=>$incv) {
+                            $inckarr[] = $psk.$dep.'d'.$i.'in'.$inck;
+                            $input_parameters[$psk.$dep.'d'.$i.'in'.$inck] = $incv;
+                        }
+                        $xwhere[] = "`$k` in (".implode(',', $inckarr).")";
                     }
                     $i++;
                 }
