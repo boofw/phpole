@@ -7,7 +7,10 @@
     "autoload": {
         "psr-4": {
             "Polev\\Phpole\\": "./"
-        }
+        },
+        "files": [
+            "Helper/helpers.php"
+        ]
     },
     "authors": [
         {
