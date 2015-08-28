@@ -17,6 +17,9 @@ class Client
         } elseif ($method === 'DELETE') {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        } elseif ($method === 'POSTRAW') {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         }
 
         $ret =  curl_exec($ch);
@@ -41,5 +44,13 @@ class Client
     static function delete($url, $data = [], $header = [])
     {
         return self::curl('DELETE', $url, $data, $header);
+    }
+
+    static function raw($url, $raw = '', $args = [], $header = [])
+    {
+        if ($args) {
+            $url .= '?'.http_build_query($args);
+        }
+        return self::curl('POSTRAW', $url, $raw, $header);
     }
 }

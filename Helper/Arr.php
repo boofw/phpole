@@ -17,4 +17,24 @@ class Arr extends IlluminateArr
         }
         return $array1;
     }
+
+    /**
+     * 将数组$array的key重置为$column的值
+     * @param $array
+     * @param $column
+     */
+    static function resetKey($array, $column)
+    {
+        $r = array();
+        if (!is_array($array)) $array = array();
+        foreach ($array as $v) {
+            $r[$v[$column]] = $v;
+        }
+        return $r;
+    }
+
+    static function format($array, $keys)
+    {
+        return array_intersect_key($array, array_flip($keys));
+    }
 }

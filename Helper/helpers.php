@@ -228,3 +228,11 @@ if ( ! function_exists('error'))
         return \Polev\Phpole\Http\Response::error($message, $uri, $withInput, $data);
     }
 }
+
+if ( ! function_exists('array_reset_key'))
+{
+    function array_reset_key($array, $column)
+    {
+        return \Polev\Phpole\Helper\Arr::resetKey($array, $column);
+    }
+}

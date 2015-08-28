@@ -84,6 +84,7 @@ class Database
 
     function in($key, $values)
     {
+        $values = array_unique($values);
         return $this->all([$key => ['$in' => $values]]);
     }
 
