@@ -7,6 +7,13 @@ class Cache
 {
     /**
      * @var array $config
+     * array(
+           'default' => array(
+               'driver' => 'database',
+               'database' => 'default',
+               'prefix' => '',
+           ),
+       );
      */
     static $config = [];
 
