@@ -64,7 +64,7 @@ class Database
         if (array_key_exists($name, self::$pool)) {
             return self::$pool[$name];
         }
-        return self::$pool[$name] = new self($name);
+        return self::$pool[$name] = new static($name);
     }
 
     function all($query = [], $fields = [], $sort = null, $limit = null, $skip = null)

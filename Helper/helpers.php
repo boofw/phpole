@@ -164,11 +164,11 @@ if ( ! function_exists('D'))
     /**
      * db::table handle
      * @param $name
-     * @return \Polev\Phpole\Database\Database
+     * @return \Polev\Phpole\Database\DatabaseTs
      */
     function D($name)
     {
-        return \Polev\Phpole\Database\Database::init($name);
+        return \Polev\Phpole\Database\DatabaseTs::init($name);
     }
 }
 
