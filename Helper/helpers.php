@@ -236,3 +236,22 @@ if ( ! function_exists('array_reset_key'))
         return \Polev\Phpole\Helper\Arr::resetKey($array, $column);
     }
 }
+
+if ( ! function_exists('first'))
+{
+    function first($array)
+    {
+        list($r,) = array_values($array);
+        return $r;
+    }
+}
+
+if ( ! function_exists('url'))
+{
+    function url($uri = '', $withDomain = 0)
+    {
+        $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', dirname($_SERVER['DOCUMENT_URI'])), '/').'/'.ltrim($uri, '/');
+        if ($withDomain) $url = 'http://'.$_SERVER['HTTP_HOST'].$url;
+        return $url;
+    }
+}

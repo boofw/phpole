@@ -15,7 +15,7 @@ class Filter
         }
         self::add('auth', function(){
             if ( ! Auth::id()) {
-                die(Response::redirect('/auth/login'));
+                die(Response::redirect(url('auth/login')));
             }
         });
         self::add('guest', function(){
