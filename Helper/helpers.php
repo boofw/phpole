@@ -114,8 +114,8 @@ if ( ! function_exists('pager_links'))
             $min = 1;
         }
         $max = $min + $linksCount;
-        if ($max > $data['pages'] + 1) {
-            $max = $data['pages'] + 1;
+        if ($max > $data['pagemax'] + 1) {
+            $max = $data['pagemax'] + 1;
         }
         $min = $max - $linksCount;
         if ($min < 1) {
@@ -124,27 +124,27 @@ if ( ! function_exists('pager_links'))
 
         $s = '';
         if ($data['page']>1) {
-            $s .= '<a href="'.query_url(['page'=>1]).'">首页</a>';
-            $s .= '<a href="'.query_url(['page'=>$data['page']-1]).'">上页</a>';
+            $s .= '<li><a href="'.query_url(['page'=>1]).'">&laquo;</a></li>';
+            $s .= '<li><a href="'.query_url(['page'=>$data['page']-1]).'">&lsaquo;</a></li>';
         } else {
-            $s .= '<a href="'.query_url(['page'=>1]).'" class="no">首页</a>';
-            $s .= '<a href="'.query_url(['page'=>1]).'" class="no">上页</a>';
+            $s .= '<li class="disabled"><a href="'.query_url(['page'=>1]).'">&laquo;</a></li>';
+            $s .= '<li class="disabled"><a href="'.query_url(['page'=>1]).'">&lsaquo;</a></li>';
         }
         for ($i = $min; $i < $max; $i++) {
             $onstat = '';
             if($i == $data['page']) {
-                $onstat = ' class="on"';
+                $onstat = ' class="active"';
             }
-            $s .= '<a href="'.query_url(['page'=>$i]).'"'.$onstat.'>'.$i.'</a>';
+            $s .= '<li'.$onstat.'><a href="'.query_url(['page'=>$i]).'">'.$i.'</a></li>';
         }
-        if ($data['page'] < $data['pages']) {
-            $s .= '<a href="'.query_url(['page'=>$data['page']+1]).'">下页</a>';
-            $s .= '<a href="'.query_url(['page'=>$data['pages']]).'">尾页</a>';
+        if ($data['page'] < $data['pagemax']) {
+            $s .= '<li><a href="'.query_url(['page'=>$data['page']+1]).'">&rsaquo;</a></li>';
+            $s .= '<li><a href="'.query_url(['page'=>$data['pagemax']]).'">&raquo;</a></li>';
         } else {
-            $s .= '<a href="'.query_url(['page'=>$data['page']+1]).'" class="no">下页</a>';
-            $s .= '<a href="'.query_url(['page'=>$data['pages']]).'" class="no">尾页</a>';
+            $s .= '<li class="disabled"><a href="'.query_url(['page'=>$data['page']+1]).'">&rsaquo;</a></li>';
+            $s .= '<li class="disabled"><a href="'.query_url(['page'=>$data['pagemax']]).'">&raquo;</a></li>';
         }
-        return $s;
+        return '<ul class="pagination">'.$s.'</ul>';
     }
 }
 

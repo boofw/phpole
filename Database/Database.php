@@ -117,6 +117,7 @@ class Database
     function page($query = [], $fields = [], $sort = null, $page = 1, $pagesize = 50)
     {
         if ($page < 1) $page = 1;
+        if ($pagesize < 1) $pagesize = 50;
         $skip = ($page - 1) * $pagesize;
         $total = $this->count($query);
         $data = $this->all($query, $fields, $sort, $pagesize, $skip);
