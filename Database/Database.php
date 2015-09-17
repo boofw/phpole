@@ -120,8 +120,8 @@ class Database
         if ($pagesize < 1) $pagesize = 50;
         $skip = ($page - 1) * $pagesize;
         $total = $this->count($query);
-        $data = $this->all($query, $fields, $sort, $pagesize, $skip);
+        $list = $this->all($query, $fields, $sort, $pagesize, $skip);
         $pagemax = ceil($total / $pagesize);
-        return ['data' => $data, 'pager' => compact('total', 'page', 'pagesize', 'pagemax')];
+        return [$list, compact('total', 'page', 'pagesize', 'pagemax')];
     }
 }

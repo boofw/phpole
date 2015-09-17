@@ -6,8 +6,12 @@ class DatabaseTs extends Database
 
     private function getQueryByTrashStatus($query)
     {
-        if ($this->getTrashed < 0) $query['rmts'] = ['$gt' => 0];
-        if ($this->getTrashed === 0) $query['rmts'] = 0;
+        if ($this->getTrashed < 0) {
+            $query['rmts'] = ['$gt' => 0];
+        } elseif ($this->getTrashed < 1) {
+            $query['rmts'] = 0;
+        }
+        $this->withOutTrashed();
         return $query;
     }
 
@@ -21,6 +25,18 @@ class DatabaseTs extends Database
     {
         $query = $this->getQueryByTrashStatus($query);
         return parent::count($query);
+    }
+
+    function page($query = [], $fields = [], $sort = null, $page = 1, $pagesize = 50)
+    {
+        $query = $this->getQueryByTrashStatus($query);
+        if ($page < 1) $page = 1;
+        if ($pagesize < 1) $pagesize = 50;
+        $skip = ($page - 1) * $pagesize;
+        $total = parent::count($query);
+        $list = parent::all($query, $fields, $sort, $pagesize, $skip);
+        $pagemax = ceil($total / $pagesize);
+        return [$list, compact('total', 'page', 'pagesize', 'pagemax')];
     }
 
     function insert($a)
