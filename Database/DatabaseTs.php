@@ -25,13 +25,16 @@ class DatabaseTs extends Database
 
     function insert($a)
     {
-        $a['crts'] = $_SERVER['REQUEST_TIME'];
+        if ( ! isset($a['crts'])) $a['crts'] = $_SERVER['REQUEST_TIME'];
+        if ( ! isset($a['upts'])) $a['upts'] = $_SERVER['REQUEST_TIME'];
         return parent::insert($a);
     }
 
     function update($criteria, $new_object, $options = [])
     {
-        $new_object['upts'] = $_SERVER['REQUEST_TIME'];
+        if ( ! isset($new_object['rmts']) &&  ! isset($new_object['upts'])) {
+            $new_object['upts'] = $_SERVER['REQUEST_TIME'];
+        }
         return parent::update($criteria, $new_object, $options);
     }
 
