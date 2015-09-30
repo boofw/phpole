@@ -9,7 +9,7 @@
             "Polev\\Phpole\\": "./"
         },
         "files": [
-            "Helper/helpers.php"
+            "helpers.php"
         ]
     },
     "authors": [

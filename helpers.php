@@ -159,14 +159,14 @@ if ( ! function_exists('xml_to_array'))
     }
 }
 
-if ( ! function_exists('D'))
+if ( ! function_exists('db'))
 {
     /**
      * db::table handle
      * @param $name
      * @return \Polev\Phpole\Database\DatabaseTs
      */
-    function D($name)
+    function db($name)
     {
         return \Polev\Phpole\Database\DatabaseTs::init($name);
     }
