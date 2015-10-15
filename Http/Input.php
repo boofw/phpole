@@ -49,7 +49,7 @@ class Input
 
     static function old($k)
     {
-        return Session::get('_old_input.'.$k);
+        return Session::get('_old_input.'.$k, '');
     }
 
     static function file($k)

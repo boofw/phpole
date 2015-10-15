@@ -204,6 +204,14 @@ if ( ! function_exists('input'))
     }
 }
 
+if ( ! function_exists('old'))
+{
+    function old($k, $default = '')
+    {
+        return \Polev\Phpole\Http\Input::old($k, $default);
+    }
+}
+
 if ( ! function_exists('view'))
 {
     function view($data = [], $view = null)

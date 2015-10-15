@@ -32,9 +32,9 @@ class Response
         return json_encode($data);
     }
 
-    static function to($code, $message, $uri = null, $withInput = false, $data = [])
+    static function to($error, $message, $uri = null, $withInput = false, $data = [])
     {
-        $cmsg = compact('code', 'message', 'uri', 'data');
+        $cmsg = compact('error', 'message', 'uri', 'data');
         if (Request::ajax()) {
             return self::json($cmsg);
         }
@@ -43,11 +43,11 @@ class Response
 
     static function success($message, $uri = null, $withInput = false, $data = [])
     {
-        return self::to(1, $message, $uri, $withInput, $data);
+        return self::to(0, $message, $uri, $withInput, $data);
     }
 
     static function error($message, $uri = null, $withInput = false, $data = [])
     {
-        return self::to(0, $message, $uri, $withInput, $data);
+        return self::to(1, $message, $uri, $withInput, $data);
     }
 }
