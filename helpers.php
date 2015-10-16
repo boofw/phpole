@@ -188,6 +188,14 @@ if ( ! function_exists('session'))
     }
 }
 
+if ( ! function_exists('cache'))
+{
+    function cache($k, $default = '')
+    {
+        return \Polev\Phpole\Cache\Cache::get($k, $default);
+    }
+}
+
 if ( ! function_exists('config'))
 {
     function config($k, $default = '')

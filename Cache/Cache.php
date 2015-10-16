@@ -62,10 +62,10 @@ class Cache
         self::init()->store->put($k, $v);
     }
 
-    static function get($k)
+    static function get($k, $default = '')
     {
         $r = self::init()->store->get($k);
-        return json_decode($r, 1);
+        return json_decode($r, 1) ?: $default;
     }
 
     static function forget($k)
