@@ -3,6 +3,7 @@
     "description": "A few usefull functions.",
     "require": {
         "illuminate/support": "5.0.33",
+        "nesbot/carbon": "~1.18",
         "symfony/var-dumper": "2.7.5"
     },
     "autoload": {
