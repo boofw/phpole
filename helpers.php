@@ -76,9 +76,9 @@ if ( ! function_exists('date_for_humans'))
         $time = date_to_timestamp($time);
         if ($now) {
             $now = date_to_timestamp($now);
-            $now = Carbon::createFromTimestamp($now);
+            $now = \Carbon\Carbon::createFromTimestamp($now);
         }
-        $r = Carbon::createFromTimestamp($time)->diffForHumans($now);
+        $r = \Carbon\Carbon::createFromTimestamp($time)->diffForHumans($now);
         $r = str_replace(' seconds', '秒', $r);
         $r = str_replace(' minutes', '分钟', $r);
         $r = str_replace(' hours', '小时', $r);
