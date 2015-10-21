@@ -34,7 +34,9 @@ class Request
     static function ip()
     {
         if (is_null(self::$ip)) {
-            self::$ip = Arr::get($_SERVER, 'HTTP_X_REAL_IP') ?: Arr::get($_SERVER, 'REMOTE_ADDR', '0.0.0.0');
+            $forwards = explode(',', Arr::get($_SERVER, 'HTTP_X_FORWARDED_FOR', ''));
+            self::$ip = trim(Arr::get($forwards, 0, ''));
+            if ( ! self::$ip) self::$ip = Arr::get($_SERVER, 'HTTP_X_REAL_IP') ?: Arr::get($_SERVER, 'REMOTE_ADDR', '0.0.0.0');
         }
         return self::$ip;
     }
