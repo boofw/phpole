@@ -20,9 +20,14 @@ class PMVC
 	static $css = array();
 	static $e = array();
 	static $v = array();
+	static $httpHost = '';
+	static $httpRemoteIp = '';
 
 	static function init($cfg = NULL)
 	{
+		(self::$httpHost = $_SERVER['HTTP_X_REAL_HOST']) || (self::$httpHost = $_SERVER['HTTP_HOST']);
+		(self::$httpRemoteIp = $_SERVER['HTTP_X_REAL_IP']) || (self::$httpRemoteIp = $_SERVER['REMOTE_ADDR']);
+
 		if (class_exists('PCfg')) {
 			PCfg::init($cfg);
 			PCfg::apply(__CLASS__);
@@ -82,11 +87,11 @@ class PMVC
 			$c = new PController();
 		}
 		try {
-			die($c->$a());
+			$c->$a();
 		} catch (Exception $e) {
 			if ($e->getCode()==404) {
 				self::$r['a_real'] = 'error';
-				die($c->actionError());
+				$c->actionError();
 			} else {
 				throw $e;
 			}

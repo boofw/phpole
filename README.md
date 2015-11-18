@@ -1,7 +1,7 @@
 polev/phpole
 =============
 
-PHP Development Toolkit
+一些常用的工具类
 
 ```
 依赖关系
@@ -40,22 +40,7 @@ WebService
 Installation
 --------------
 
-* when PHP version >= 5.4
-
-```
-composer require polev/phpole:dev-develop
-```
-
-* when PHP version >= 5.0
-
-```
-composer require polev/phpole:dev-conserved
-```
-
-Autoload
---------------
-
-* when PHP version >= 5.3
+* php5.3 以上环境
 
 ```
 composer install
@@ -63,7 +48,7 @@ composer install
 require 'vendor/autoload.php';
 ```
 
-* when PHP version >= 5.0
+* php5.2 及以下环境
 
 ```
 composer install
