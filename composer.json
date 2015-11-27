@@ -1,13 +1,13 @@
 {
-    "name": "polev/phpole",
+    "name": "boofw/phpole",
     "description": "A few usefull functions.",
     "autoload": {
         "classmap": [""]
     },
     "authors": [
         {
-            "name": "polev",
-            "email": "polevong@live.com"
+            "name": "Boof Wang",
+            "email": "i@boof.wang"
         }
     ]
 }
