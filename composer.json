@@ -1,5 +1,5 @@
 {
-    "name": "polev/phpole",
+    "name": "boofw/phpole",
     "description": "A few usefull functions.",
     "require": {
         "illuminate/support": "5.0.33",
@@ -16,8 +16,8 @@
     },
     "authors": [
         {
-            "name": "polev",
-            "email": "polevong@live.com"
+            "name": "Boof Wang",
+            "email": "i@boof.wang"
         }
     ]
 }
