@@ -6,7 +6,7 @@ class PController
 	protected $refer;
 	protected $ajax;
 
-	protected $pgTitle = 'WebSite powered by polev/phpole';
+	protected $pgTitle = 'WebSite powered by boofw/phpole';
 	protected $pgKeywords = '';
 	protected $pgDescription = '';
 	protected $lv = array(); // layout vars

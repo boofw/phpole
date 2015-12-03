@@ -25,7 +25,7 @@ class PView
             if (PCfg::$cfg['sitename']) {
                 self::$pgTitle = PCfg::$cfg['sitename'];
             } else {
-                self::$pgTitle = 'WebSite powered by polev/phpole';
+                self::$pgTitle = 'WebSite powered by boofw/phpole';
             }
         }
         if ($s) {

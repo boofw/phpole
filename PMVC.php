@@ -1,8 +1,6 @@
 <?php
 /**
  * MVC 模式
- *
- * @author pole
  */
 class PMVC
 {

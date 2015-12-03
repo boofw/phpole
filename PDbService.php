@@ -3,8 +3,6 @@
  * Service - DAO 桥
  * 
  * 通过 Service 调用 DAO 中的方法，使 DAO 的功能可在远程应用中直接调用
- * 
- * @author pole
  */
 class PDbService extends PService
 {

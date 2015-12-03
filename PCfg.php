@@ -1,8 +1,6 @@
 <?php
 /**
  * 全局配置
- *
- * @author pole
  */
 class PCfg
 {

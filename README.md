@@ -1,4 +1,4 @@
-polev/phpole
+boofw/phpole
 =============
 
 一些常用的工具类
@@ -53,7 +53,7 @@ require 'vendor/autoload.php';
 ```
 composer install
 
-require 'vendor/polev/phpole/PAutoload.php';
+require 'vendor/boofw/phpole/PAutoload.php';
 
 PAutoload::importDir(array(your_library_dirs)); // optional
 
@@ -123,7 +123,7 @@ PDAO::$cfg = $cfg; // or use PCfg::init($cfg);
 
 $r = PDAO::init('user')->all(array(), array(), 10);
 
-$r = D('user')->all(array(), array(), 10); // require 'vendor/polev/phpole/functions.php'
+$r = D('user')->all(array(), array(), 10); // require 'vendor/boofw/phpole/functions.php'
 ```
 
 * PService
@@ -134,7 +134,7 @@ PService::$apiroot = __DIR__.'/service'; // or use PCfg::init($cfg);
 $r = PService::init('sync', 1)->get(3);
 $r = PService::init('base.user', 1)->get(3);
 
-$r = S('base.user')->get(3); // require 'vendor/polev/phpole/functions.php'
+$r = S('base.user')->get(3); // require 'vendor/boofw/phpole/functions.php'
 ```
 
 * PDbService
@@ -142,7 +142,7 @@ $r = S('base.user')->get(3); // require 'vendor/polev/phpole/functions.php'
 ```
 $r = PDbService::init('db:base.user', 1)->get(3);
 
-$r = S('db:base.user')->get(3); // require 'vendor/polev/phpole/functions.php'
+$r = S('db:base.user')->get(3); // require 'vendor/boofw/phpole/functions.php'
 ```
 
 * functions
