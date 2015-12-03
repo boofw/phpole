@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Database;
+<?php namespace Boofw\Phpole\Database;
 
 class DatabaseTs extends Database
 {

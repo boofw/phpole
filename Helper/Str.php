@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Helper;
+<?php namespace Boofw\Phpole\Helper;
 
 use Illuminate\Support\Str as IlluminateStr;
 

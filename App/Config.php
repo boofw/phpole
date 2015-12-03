@@ -1,6 +1,6 @@
-<?php namespace Polev\Phpole\App;
+<?php namespace Boofw\Phpole\App;
 
-use Polev\Phpole\Helper\Arr;
+use Boofw\Phpole\Helper\Arr;
 
 class Config
 {

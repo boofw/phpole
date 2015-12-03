@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Api;
+<?php namespace Boofw\Phpole\Api;
 
 use Exception;
 use ArrayObject;

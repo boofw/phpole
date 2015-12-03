@@ -1,7 +1,7 @@
-<?php namespace Polev\Phpole\Cache;
+<?php namespace Boofw\Phpole\Cache;
 
-use Polev\Phpole\Helper\Arr;
-use Polev\Phpole\Exception\AppException;
+use Boofw\Phpole\Helper\Arr;
+use Boofw\Phpole\Exception\AppException;
 
 class Cache
 {
@@ -20,7 +20,7 @@ class Cache
     private static $pool = [];
 
     /**
-     * @var \Polev\Phpole\Cache\Store\Database
+     * @var \Boofw\Phpole\Cache\Store\Database
      */
     private $store;
 
@@ -29,7 +29,7 @@ class Cache
         if (array_key_exists($name, self::$config)) {
             $config = self::$config[$name];
             if ($config['driver'] === 'database') {
-                $this->store = new \Polev\Phpole\Cache\Store\Database($config['database']);
+                $this->store = new \Boofw\Phpole\Cache\Store\Database($config['database']);
             } else {
                 throw new AppException('Cache driver <'.$config['driver'].'> not found!');
             }
@@ -41,7 +41,7 @@ class Cache
     /**
      * Cache init
      * @param $name
-     * @return \Polev\Phpole\Cache\Cache
+     * @return \Boofw\Phpole\Cache\Cache
      */
     static function init($name = null)
     {

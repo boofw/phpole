@@ -1,11 +1,11 @@
-<?php namespace Polev\Phpole\Cache\Store;
+<?php namespace Boofw\Phpole\Cache\Store;
 
-use Polev\Phpole\Database\Database as Table;
+use Boofw\Phpole\Database\Database as Table;
 
 class Database
 {
     /**
-     * @var \Polev\Phpole\Database\Database
+     * @var \Boofw\Phpole\Database\Database
      */
     private $handle;
 

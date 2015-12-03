@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Mvc;
+<?php namespace Boofw\Phpole\Mvc;
 
 class View
 {

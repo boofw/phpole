@@ -1,7 +1,7 @@
-<?php namespace Polev\Phpole\App;
+<?php namespace Boofw\Phpole\App;
 
-use Polev\Phpole\Http\Request;
-use Polev\Phpole\Http\Session;
+use Boofw\Phpole\Http\Request;
+use Boofw\Phpole\Http\Session;
 
 class Auth
 {

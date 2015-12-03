@@ -1,6 +1,6 @@
-<?php namespace Polev\Phpole\App;
+<?php namespace Boofw\Phpole\App;
 
-use Polev\Phpole\Http\Input;
+use Boofw\Phpole\Http\Input;
 
 class Validator
 {

@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Http;
+<?php namespace Boofw\Phpole\Http;
 
 class Client
 {

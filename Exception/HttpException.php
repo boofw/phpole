@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Exception;
+<?php namespace Boofw\Phpole\Exception;
 
 use Exception;
 

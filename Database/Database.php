@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Database;
+<?php namespace Boofw\Phpole\Database;
 
 class Database
 {
@@ -29,7 +29,7 @@ class Database
     private static $pool = [];
 
     /**
-     * @var \Polev\Phpole\Database\Pdo\Collection
+     * @var \Boofw\Phpole\Database\Pdo\Collection
      */
     private $collection;
 
@@ -44,7 +44,7 @@ class Database
                 $this->collection = $mongoClient->selectCollection($config['db'], $table);
             } elseif ($config['driver'] === 'pdo') {
                 $pdo = new \PDO($config['dsn'], $config['username'], $config['passwd'], $config['options']);
-                $this->collection = new \Polev\Phpole\Database\Pdo\Collection($pdo, $table);
+                $this->collection = new \Boofw\Phpole\Database\Pdo\Collection($pdo, $table);
             } else {
                 throw new AppException('Database driver <'.$config['driver'].'> not found!');
             }
@@ -56,7 +56,7 @@ class Database
     /**
      * Database init
      * @param $name
-     * @return \Polev\Phpole\Database\Database
+     * @return \Boofw\Phpole\Database\Database
      */
     static function init($name)
     {

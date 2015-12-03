@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Api;
+<?php namespace Boofw\Phpole\Api;
 
 class HttpServer
 {

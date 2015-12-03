@@ -1,6 +1,6 @@
-<?php namespace Polev\Phpole\Api;
+<?php namespace Boofw\Phpole\Api;
 
-use Polev\Phpole\Http\Client;
+use Boofw\Phpole\Http\Client;
 use ArrayObject;
 
 class HttpClient

@@ -1,7 +1,7 @@
-<?php namespace Polev\Phpole\Http;
+<?php namespace Boofw\Phpole\Http;
 
-use Polev\Phpole\Helper\Str;
-use Polev\Phpole\Helper\Arr;
+use Boofw\Phpole\Helper\Str;
+use Boofw\Phpole\Helper\Arr;
 
 class Input
 {

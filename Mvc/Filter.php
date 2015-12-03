@@ -1,8 +1,8 @@
-<?php namespace Polev\Phpole\Mvc;
+<?php namespace Boofw\Phpole\Mvc;
 
-use Polev\Phpole\Http\Response;
-use Polev\Phpole\App\Auth;
-use Polev\Phpole\Helper\Arr;
+use Boofw\Phpole\Http\Response;
+use Boofw\Phpole\App\Auth;
+use Boofw\Phpole\Helper\Arr;
 
 class Filter
 {

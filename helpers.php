@@ -164,11 +164,11 @@ if ( ! function_exists('db'))
     /**
      * db::table handle
      * @param $name
-     * @return \Polev\Phpole\Database\DatabaseTs
+     * @return \Boofw\Phpole\Database\DatabaseTs
      */
     function db($name)
     {
-        return \Polev\Phpole\Database\DatabaseTs::init($name);
+        return \Boofw\Phpole\Database\DatabaseTs::init($name);
     }
 }
 
@@ -176,7 +176,7 @@ if ( ! function_exists('view_extend'))
 {
     function view_extend($layout)
     {
-        \Polev\Phpole\Mvc\View::extend($layout);
+        \Boofw\Phpole\Mvc\View::extend($layout);
     }
 }
 
@@ -184,7 +184,7 @@ if ( ! function_exists('session'))
 {
     function session($k, $default = '')
     {
-        return \Polev\Phpole\Http\Session::get($k, $default);
+        return \Boofw\Phpole\Http\Session::get($k, $default);
     }
 }
 
@@ -192,7 +192,7 @@ if ( ! function_exists('cache'))
 {
     function cache($k, $default = '')
     {
-        return \Polev\Phpole\Cache\Cache::get($k, $default);
+        return \Boofw\Phpole\Cache\Cache::get($k, $default);
     }
 }
 
@@ -200,7 +200,7 @@ if ( ! function_exists('config'))
 {
     function config($k, $default = '')
     {
-        return \Polev\Phpole\App\Config::get($k, $default);
+        return \Boofw\Phpole\App\Config::get($k, $default);
     }
 }
 
@@ -208,7 +208,7 @@ if ( ! function_exists('input'))
 {
     function input($k, $default = '')
     {
-        return \Polev\Phpole\Http\Input::get($k, $default);
+        return \Boofw\Phpole\Http\Input::get($k, $default);
     }
 }
 
@@ -216,7 +216,7 @@ if ( ! function_exists('old'))
 {
     function old($k, $default = '')
     {
-        return \Polev\Phpole\Http\Input::old($k, $default);
+        return \Boofw\Phpole\Http\Input::old($k, $default);
     }
 }
 
@@ -224,8 +224,8 @@ if ( ! function_exists('view'))
 {
     function view($data = [], $view = null)
     {
-        if ($view) return \Polev\Phpole\Mvc\View::render($view, $data);
-        return \Polev\Phpole\Mvc\View::show($data);
+        if ($view) return \Boofw\Phpole\Mvc\View::render($view, $data);
+        return \Boofw\Phpole\Mvc\View::show($data);
     }
 }
 
@@ -233,7 +233,7 @@ if ( ! function_exists('success'))
 {
     function success($message, $uri = null, $withInput = false, $data = [])
     {
-        return \Polev\Phpole\Http\Response::success($message, $uri, $withInput, $data);
+        return \Boofw\Phpole\Http\Response::success($message, $uri, $withInput, $data);
     }
 }
 
@@ -241,7 +241,7 @@ if ( ! function_exists('error'))
 {
     function error($message, $uri = null, $withInput = false, $data = [])
     {
-        return \Polev\Phpole\Http\Response::error($message, $uri, $withInput, $data);
+        return \Boofw\Phpole\Http\Response::error($message, $uri, $withInput, $data);
     }
 }
 
@@ -249,7 +249,7 @@ if ( ! function_exists('array_reset_key'))
 {
     function array_reset_key($array, $column)
     {
-        return \Polev\Phpole\Helper\Arr::resetKey($array, $column);
+        return \Boofw\Phpole\Helper\Arr::resetKey($array, $column);
     }
 }
 

@@ -1,4 +1,4 @@
-<?php namespace Polev\Phpole\Helper;
+<?php namespace Boofw\Phpole\Helper;
 
 class File
 {

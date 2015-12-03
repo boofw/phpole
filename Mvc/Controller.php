@@ -1,8 +1,8 @@
-<?php namespace Polev\Phpole\Mvc;
+<?php namespace Boofw\Phpole\Mvc;
 
-use Polev\Phpole\Helper\Arr;
-use Polev\Phpole\Exception\HttpException;
-use Polev\Phpole\Exception\AppException;
+use Boofw\Phpole\Helper\Arr;
+use Boofw\Phpole\Exception\HttpException;
+use Boofw\Phpole\Exception\AppException;
 
 class Controller
 {
