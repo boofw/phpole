@@ -159,19 +159,6 @@ if ( ! function_exists('xml_to_array'))
     }
 }
 
-if ( ! function_exists('db'))
-{
-    /**
-     * db::table handle
-     * @param $name
-     * @return \Boofw\Phpole\Database\DatabaseTs
-     */
-    function db($name)
-    {
-        return \Boofw\Phpole\Database\DatabaseTs::init($name);
-    }
-}
-
 if ( ! function_exists('view_extend'))
 {
     function view_extend($layout)

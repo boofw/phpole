@@ -1,6 +1,6 @@
 <?php namespace Boofw\Phpole\Database;
 
-class DatabaseTs extends Database
+class SoftDelete extends Timestamp
 {
     private $getTrashed = 0; // -1:onlyTrashed, 0:withOutTrashed, 1:withTrashed
 
@@ -37,21 +37,6 @@ class DatabaseTs extends Database
         $list = parent::all($query, $fields, $sort, $pagesize, $skip);
         $pagemax = ceil($total / $pagesize);
         return [$list, compact('total', 'page', 'pagesize', 'pagemax')];
-    }
-
-    function insert($a)
-    {
-        if ( ! isset($a['crts'])) $a['crts'] = $_SERVER['REQUEST_TIME'];
-        if ( ! isset($a['upts'])) $a['upts'] = $_SERVER['REQUEST_TIME'];
-        return parent::insert($a);
-    }
-
-    function update($criteria, $new_object, $options = [])
-    {
-        if ( ! isset($new_object['rmts']) &&  ! isset($new_object['upts'])) {
-            $new_object['upts'] = $_SERVER['REQUEST_TIME'];
-        }
-        return parent::update($criteria, $new_object, $options);
     }
 
     function softDelete($criteria)
