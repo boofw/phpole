@@ -2,9 +2,9 @@
     "name": "boofw/phpole",
     "description": "A few usefull functions.",
     "require": {
-        "illuminate/support": "5.0.33",
+        "illuminate/support": "~5.0",
         "nesbot/carbon": "~1.18",
-        "symfony/var-dumper": "2.7.5"
+        "symfony/var-dumper": "~2.0"
     },
     "autoload": {
         "psr-4": {
