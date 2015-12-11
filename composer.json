@@ -1,6 +1,7 @@
 {
     "name": "boofw/phpole",
     "description": "A few usefull functions.",
+    "license": "MIT",
     "require": {
         "php": ">=5.0.0"
     },
@@ -10,6 +11,7 @@
     "authors": [
         {
             "name": "Boof Wang",
+            "homepage": "http://boof.wang",
             "email": "i@boof.wang"
         }
     ]
