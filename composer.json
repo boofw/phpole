@@ -1,6 +1,9 @@
 {
     "name": "boofw/phpole",
     "description": "A few usefull functions.",
+    "require": {
+        "php": ">=5.0.0",
+    },
     "autoload": {
         "classmap": [""]
     },
