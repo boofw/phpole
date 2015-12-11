@@ -1,6 +1,7 @@
 {
     "name": "boofw/phpole",
     "description": "A few usefull functions.",
+    "license": "MIT",
     "require": {
         "illuminate/support": "~5.0",
         "nesbot/carbon": "~1.18",
@@ -17,6 +18,7 @@
     "authors": [
         {
             "name": "Boof Wang",
+            "homepage": "http://boof.wang",
             "email": "i@boof.wang"
         }
     ]
