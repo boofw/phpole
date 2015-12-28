@@ -9,7 +9,7 @@ class HttpServer
         if (self::makeToken($_SERVER['HTTP_PHPOLE_APPID']) !== $_SERVER['HTTP_PHPOLE_TOKEN']) {
             return json_encode(['error' => 'token验证失败']);
         }
-        $r = call_user_func_array(array(api(input('api')), input('func')), json_decode(input('arguments'), 1));
+        $r = call_user_func_array(array(new Native(input('api')), input('func')), json_decode(input('arguments'), 1));
         return json_encode($r);
     }
 
