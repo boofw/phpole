@@ -11,7 +11,7 @@ class Route
     static function run()
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $root = dirname($_SERVER['DOCUMENT_URI']);
+        $root = dirname($_SERVER['PHP_SELF']);
         if ($root !== DIRECTORY_SEPARATOR) {
             $uri = substr($uri, strlen($root));
         }
