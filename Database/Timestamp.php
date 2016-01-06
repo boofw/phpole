@@ -16,4 +16,12 @@ class Timestamp extends Database
         }
         return parent::update($criteria, $new_object, $options);
     }
+
+    function upsert($criteria, $new_object, $options = [])
+    {
+        if ( ! isset($new_object['crts']) && ! $this->first($criteria)) {
+            $new_object['crts'] = $_SERVER['REQUEST_TIME'];
+        }
+        return parent::upsert($criteria, $new_object, $options);
+    }
 }

@@ -253,7 +253,7 @@ if ( ! function_exists('url'))
 {
     function url($uri = '', $withDomain = 0)
     {
-        $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', dirname($_SERVER['DOCUMENT_URI'])), '/').'/'.ltrim($uri, '/');
+        $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', dirname($_SERVER['PHP_SELF'])), '/').'/'.ltrim($uri, '/');
         if ($withDomain) $url = 'http://'.$_SERVER['HTTP_HOST'].$url;
         return $url;
     }
