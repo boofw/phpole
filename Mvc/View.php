@@ -8,6 +8,8 @@ class View
     static $theme = '';
     static $layout = '';
 
+    static $customGetViewFileFunc = [];
+
     static function theme($theme = null)
     {
         if ($theme) {
@@ -38,7 +40,13 @@ class View
                 $viewFilePath = $themeFilePath;
             }
         }
-        return $viewFilePath;
+        if (file_exists($viewFilePath)) {
+            return $viewFilePath;
+        }
+        if (isset(self::$customGetViewFileFunc[1]) && method_exists(self::$customGetViewFileFunc[0], self::$customGetViewFileFunc[1])) {
+            return call_user_func_array([self::$customGetViewFileFunc[0], self::$customGetViewFileFunc[1]], [$view]);
+        }
+        return null;
     }
 
     static function renderFile($file, $data = [])

@@ -166,6 +166,13 @@ if ( ! function_exists('view_extend'))
         \Boofw\Phpole\Mvc\View::extend($layout);
     }
 }
+if ( ! function_exists('view_insert'))
+{
+    function view_insert($view)
+    {
+        \Boofw\Phpole\Mvc\View::insert($view);
+    }
+}
 
 if ( ! function_exists('session'))
 {
@@ -188,6 +195,22 @@ if ( ! function_exists('config'))
     function config($k, $default = '')
     {
         return \Boofw\Phpole\App\Config::get($k, $default);
+    }
+}
+
+if ( ! function_exists('runtime'))
+{
+    function runtime($k, $default = '')
+    {
+        return config('runtime.'.$k, $default);
+    }
+}
+
+if ( ! function_exists('runtime_set'))
+{
+    function runtime_set($k, $v)
+    {
+        return \Boofw\Phpole\App\Config::set('runtime.'.$k, $v);
     }
 }
 
@@ -256,5 +279,19 @@ if ( ! function_exists('url'))
         $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', dirname($_SERVER['PHP_SELF'])), '/').'/'.ltrim($uri, '/');
         if ($withDomain) $url = 'http://'.$_SERVER['HTTP_HOST'].$url;
         return $url;
+    }
+}
+
+if ( ! function_exists('route'))
+{
+    function route($k = 'route')
+    {
+        if ($k === 'controller') {
+            return \Boofw\Phpole\Mvc\Route::$controller;
+        } elseif ($k === 'action') {
+            return \Boofw\Phpole\Mvc\Route::$action;
+        } else {
+            return \Boofw\Phpole\Mvc\Route::$route;
+        }
     }
 }

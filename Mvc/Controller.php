@@ -8,6 +8,8 @@ class Controller
 {
     static $controllerDir = '';
 
+    static $namespaces = [];
+
     protected $filters = [];
 
     function __construct()
@@ -48,20 +50,34 @@ class Controller
 
     static function run()
     {
-        $c = ucfirst(Route::$controller) . 'Controller';
-        if (!class_exists($c) && file_exists(self::$controllerDir.'/'.$c.'.php')) {
-            require self::$controllerDir.'/'.$c.'.php';
-        }
-        if (class_exists($c)) {
+        $c = self::newInstance();
+        if ($c instanceof self) {
             $a = 'get' . ucfirst(Route::$action);
             if (Arr::get($_SERVER, 'REQUEST_METHOD')==='POST') {
                 $a = 'post' . ucfirst(Route::$action);
             }
-            $c = new $c();
             $c->filter($a);
             echo $c->$a();
         } else {
             throw new HttpException(404);
         }
+    }
+
+    static function newInstance()
+    {
+        $c = ucfirst(Route::$controller) . 'Controller';
+        if ( ! class_exists($c) && file_exists(self::$controllerDir.'/'.$c.'.php')) {
+            require self::$controllerDir.'/'.$c.'.php';
+        }
+        if (class_exists($c)) {
+            return new $c();
+        }
+        foreach (self::$namespaces as $ns) {
+            $c = $ns.$c;
+            if (class_exists($c)) {
+                return new $c();
+            }
+        }
+        return null;
     }
 }
