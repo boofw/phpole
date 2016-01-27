@@ -295,3 +295,49 @@ if ( ! function_exists('route'))
         }
     }
 }
+
+if ( ! function_exists('str_tidy'))
+{
+    function str_tidy($s, $len = 0)
+    {
+        $s = strip_tags($s);
+        $s = strip_tags(html_entity_decode($s));
+        $s = str_replace(array('　',"\n","\r","\t"), ' ', $s);
+        $s = preg_replace('/\s{2,}/', ' ', $s);
+        $s = trim($s);
+        if ($len) $s = mb_substr($s, 0, $len, 'utf-8');
+        return $s;
+    }
+}
+
+if ( ! function_exists('str_tidy_with_br'))
+{
+    function str_tidy_with_br($s, $len = 0) {
+        $s = nl2br($s);
+        $s = preg_replace('/\s{2,}/', ' ', $s);
+        $s = str_replace('<p', "\n<p", $s);
+        $s = str_replace('<div', "\n<div", $s);
+        $s = str_replace('<br', "\n<br", $s);
+        $s = str_replace('<li', "\n<li", $s);
+        $s = strip_tags($s);
+        $s = strip_tags(html_entity_decode($s));
+        $s = str_replace("\r", "\n", $s);
+        $s = preg_replace('/\n{2,}/', "\n", $s);
+        $s = trim($s);
+        if ($len) $s = mb_substr($s, 0, $len, 'utf-8');
+        $s = nl2br($s);
+        return $s;
+    }
+}
+
+if ( ! function_exists('auth'))
+{
+    function auth($k = '')
+    {
+        $user = \Boofw\Phpole\App\Auth::user();
+        if ($k) {
+            return array_get($user, $k);
+        }
+        return $user;
+    }
+}

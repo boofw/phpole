@@ -1,5 +1,7 @@
 <?php namespace Boofw\Phpole\Database;
 
+use Boofw\Phpole\Helper\Arr;
+
 class Database
 {
     /**
@@ -85,7 +87,8 @@ class Database
     function in($key, $values)
     {
         $values = array_unique($values);
-        return $this->all([$key => ['$in' => $values]]);
+        $r = $this->all([$key => ['$in' => $values]]);
+        return Arr::sortByArray($r, $key, $values);
     }
 
     function count($query = [])

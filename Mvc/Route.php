@@ -16,12 +16,12 @@ class Route
             $uri = substr($uri, strlen($root));
         }
         list($uri,) = explode('?', $uri);
-        if (!is_array(self::$routes)) {
+        if ( ! is_array(self::$routes)) {
             self::$routes = array();
         }
         self::$routes['/^\/([\w]+)\/(\d+)(\/.*)?$/'] = 'c=$1&a=show&id=$2&v=$3';
         self::$routes['/^\/([\w]+)\/([\w]+)\/(\d+)(\/.*)?$/'] = 'c=$1&a=$2&id=$3&v=$4';
-        self::$routes['/^\/([\w]+)\/([\w]+)(\/.*)?$/'] = 'c=$1&a=$2&v=$3';
+        self::$routes['/^\/([\w]+)\/([\w%]+)(\/.*)?$/'] = 'c=$1&a=$2&v=$3';
         self::$routes['/^\/([\w]+)\/?$/'] = 'c=$1&a=index&v=';
         foreach (self::$routes as $rk=>$rv) {
             if (preg_match($rk, $uri, $m)) {
@@ -38,7 +38,7 @@ class Route
                         $moreArgs = explode('/', trim($args['v'], '/'));
                         unset($args['v']);
                         for ($i=0; $i<count($moreArgs); $i=$i+2) {
-                            if (!is_numeric($moreArgs[$i]) && !(preg_match('/^\$[1-9]$/', $moreArgs[$i]) && !$moreArgs[$i+1])) {
+                            if ( ! is_numeric($moreArgs[$i]) && ! (preg_match('/^\$[1-9]$/', $moreArgs[$i]) && ! $moreArgs[$i+1])) {
                                 $args[$moreArgs[$i]] = $moreArgs[$i+1];
                             }
                         }
@@ -49,8 +49,8 @@ class Route
                 break;
             }
         }
-        if (!self::$controller) self::$controller = 'index';
-        if (!self::$action) self::$action = 'index';
+        if ( ! self::$controller) self::$controller = 'index';
+        if ( ! self::$action) self::$action = 'index';
         self::$route = self::$controller.'/'.self::$action;
         echo Controller::run();
     }

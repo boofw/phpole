@@ -11,9 +11,9 @@ class Arr extends IlluminateArr
 
     static function merge($array1, $array2)
     {
-        $array2 = Arr::dot($array2);
+        $array2 = self::dot($array2);
         foreach ($array2 as $k => $v) {
-            Arr::set($array1, $k, $v);
+            self::set($array1, $k, $v);
         }
         return $array1;
     }
@@ -26,7 +26,7 @@ class Arr extends IlluminateArr
     static function resetKey($array, $column)
     {
         $r = array();
-        if (!is_array($array)) $array = array();
+        if ( ! is_array($array)) $array = array();
         foreach ($array as $v) {
             $r[$v[$column]] = $v;
         }
@@ -36,5 +36,26 @@ class Arr extends IlluminateArr
     static function format($array, $keys)
     {
         return array_intersect_key($array, array_flip($keys));
+    }
+
+    /**
+     * 数组$array的$column按照$orderby排序
+     * @param array $array
+     * @param string $column
+     * @param array $orderby
+     */
+    static function sortByArray($array, $column, $orderby) {
+        $array = self::resetKey($array, $column);
+        $data = array();
+        if ( ! is_array($orderby)) $orderby = array();
+        foreach ($orderby as $id) {
+            if ($array[$id]) {
+                $data[] = $array[$id];
+                unset($array[$id]);
+            }
+        }
+        $array = array_values($array);
+        $array = array_merge($data, $array);
+        return $array;
     }
 }
