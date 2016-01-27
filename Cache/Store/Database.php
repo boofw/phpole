@@ -11,7 +11,7 @@ class Database
 
     function __construct($database)
     {
-        $this->handle = Table::init($database.'.sys_cache');
+        $this->handle = Table::init($database);
     }
 
     function put($k, $v, $minutes = 0)

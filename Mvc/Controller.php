@@ -7,7 +7,6 @@ use Boofw\Phpole\Exception\AppException;
 class Controller
 {
     static $controllerDir = '';
-
     static $namespaces = [];
 
     protected $filters = [];
@@ -65,6 +64,10 @@ class Controller
 
     static function newInstance()
     {
+        if ( ! self::$controllerDir) {
+            self::$controllerDir = dirname(dirname(dirname(dirname(__DIR__)))).'/controller';
+        }
+
         $c = ucfirst(Route::$controller) . 'Controller';
         if ( ! class_exists($c) && file_exists(self::$controllerDir.'/'.$c.'.php')) {
             require self::$controllerDir.'/'.$c.'.php';

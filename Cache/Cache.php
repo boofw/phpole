@@ -5,17 +5,13 @@ use Boofw\Phpole\Exception\AppException;
 
 class Cache
 {
-    /**
-     * @var array $config
-     * array(
-           'default' => array(
-               'driver' => 'database',
-               'database' => 'default',
-               'prefix' => '',
-           ),
-       );
-     */
-    static $config = [];
+    static $config = array(
+        'default' => array(
+            'driver' => 'database',
+            'database' => 'default.sys_cache',
+            'prefix' => '',
+        ),
+    );
 
     private static $pool = [];
 

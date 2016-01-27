@@ -4,18 +4,21 @@ class View
 {
     static $viewDir = '';
     static $themeDir = '';
+    static $customGetViewFileFunc = [];
 
     static $theme = '';
     static $layout = '';
 
-    static $customGetViewFileFunc = [];
-
     static function theme($theme = null)
     {
+        if ( ! self::$themeDir) {
+            self::$themeDir = dirname(dirname(dirname(dirname(__DIR__)))).'/theme';
+        }
+
         if ($theme) {
             self::$theme = $theme;
         }
-        if (!is_dir(self::$themeDir.'/'.self::$theme)) {
+        if ( ! is_dir(self::$themeDir.'/'.self::$theme)) {
             self::$theme = '';
         }
         return self::$theme;
@@ -33,6 +36,13 @@ class View
 
     static function getViewFile($view)
     {
+        if ( ! self::$viewDir) {
+            self::$viewDir = dirname(dirname(dirname(dirname(__DIR__)))).'/view';
+        }
+        if ( ! self::$themeDir) {
+            self::$themeDir = dirname(dirname(dirname(dirname(__DIR__)))).'/theme';
+        }
+
         $viewFilePath = self::$viewDir.'/'.$view.'.php';
         if (self::$theme) {
             $themeFilePath = self::$themeDir.'/'.self::$theme.'/'.$view.'.php';
