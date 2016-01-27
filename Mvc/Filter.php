@@ -15,7 +15,8 @@ class Filter
         }
         self::add('auth', function(){
             if ( ! Auth::id()) {
-                die(Response::redirect(url('auth/login')));
+                $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', dirname($_SERVER['PHP_SELF'])), '/').'/auth/login';
+                die(Response::redirect($url));
             }
         });
         self::add('guest', function(){
