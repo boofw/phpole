@@ -29,8 +29,11 @@ class View
         self::$layout = $layout;
     }
 
-    static function insert($view)
+    static function insert($view, $data = [])
     {
+        foreach ($data as $k=>$v) {
+            $$k=$v;
+        }
         include self::getViewFile($view);
     }
 

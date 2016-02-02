@@ -1,5 +1,6 @@
 <?php namespace Boofw\Phpole\Api;
 
+use Boofw\Phpole\Helper\Arr;
 use Boofw\Phpole\Http\Input;
 
 class HttpServer
@@ -17,7 +18,7 @@ class HttpServer
 
     static function makeToken($appId)
     {
-        $appKey = array_get(self::$keys, $appId);
+        $appKey = Arr::get(self::$keys, $appId);
         $post = $_POST;
         $token = sha1($appId.$appKey.$post['api'].$post['func'].md5(json_encode($post['arguments'])));
         return $token;

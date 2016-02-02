@@ -168,9 +168,9 @@ if ( ! function_exists('view_extend'))
 }
 if ( ! function_exists('view_insert'))
 {
-    function view_insert($view)
+    function view_insert($view, $data = [])
     {
-        \Boofw\Phpole\Mvc\View::insert($view);
+        \Boofw\Phpole\Mvc\View::insert($view, $data);
     }
 }
 
