@@ -17,9 +17,17 @@ class Native
 
     function __call($name , $arguments)
     {
-        $c = self::$apiNamespace . '\\' . $this->api;
-        if ( ! class_exists($c) && file_exists(self::$apiDir.'/'.$this->api.'.php')) {
-            require self::$apiDir.'/'.$this->api.'.php';
+        $c = $this->api;
+        if ( ! class_exists($c)) {
+            if ( ! self::$apiDir) {
+                self::$apiDir = dirname(dirname(dirname(dirname(__DIR__)))).'/api';
+            }
+            if (file_exists(self::$apiDir.'/'.$this->api.'.php')){
+                require self::$apiDir.'/'.$this->api.'.php';
+            }
+        }
+        if ( ! class_exists($c) && self::$apiNamespace) {
+            $c = self::$apiNamespace . $this->api;
         }
         if ( ! class_exists($c)) {
             return new ArrayObject(array(

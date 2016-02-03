@@ -4,7 +4,7 @@ use Boofw\Phpole\Helper\Arr;
 
 class Config
 {
-    static $config = null;
+    static $config = [];
 
     static function init($config)
     {
@@ -12,8 +12,6 @@ class Config
             self::$config = $config;
         } elseif (is_string($config) && file_exists($config)) {
             self::$config = require $config;
-        } else {
-            self::$config = [];
         }
 
         $libs = self::get('libs');
