@@ -7,6 +7,7 @@ use Boofw\Phpole\Exception\AppException;
 class Controller
 {
     static $controllerDir = '';
+    static $appNamespace = '';
     static $namespaces = [];
 
     protected $filters = [];
@@ -74,6 +75,12 @@ class Controller
         }
         if (class_exists($c)) {
             return new $c();
+        }
+        if (self::$appNamespace) {
+            $c = self::$appNamespace.'Controller\\'.$c;
+            if (class_exists($c)) {
+                return new $c();
+            }
         }
         foreach (self::$namespaces as $ns) {
             $c = $ns.$c;

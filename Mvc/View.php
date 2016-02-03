@@ -4,6 +4,7 @@ class View
 {
     static $viewDir = '';
     static $themeDir = '';
+    static $appDir = '';
     static $customGetViewFileFunc = [];
 
     static $theme = '';
@@ -11,15 +12,8 @@ class View
 
     static function theme($theme = null)
     {
-        if ( ! self::$themeDir) {
-            self::$themeDir = dirname(dirname(dirname(dirname(__DIR__)))).'/theme';
-        }
-
-        if ($theme) {
+        if ( ! is_null($theme)) {
             self::$theme = $theme;
-        }
-        if ( ! is_dir(self::$themeDir.'/'.self::$theme)) {
-            self::$theme = '';
         }
         return self::$theme;
     }
@@ -37,24 +31,34 @@ class View
         include self::getViewFile($view);
     }
 
-    static function getViewFile($view)
+    static function getViewFile($view, $viewDir = '', $themeDir = '')
     {
-        if ( ! self::$viewDir) {
-            self::$viewDir = dirname(dirname(dirname(dirname(__DIR__)))).'/view';
+        if ( ! $viewDir) {
+            if ( ! self::$viewDir) {
+                self::$viewDir = dirname(dirname(dirname(dirname(__DIR__)))).'/view';
+            }
+            $viewDir = self::$viewDir;
         }
-        if ( ! self::$themeDir) {
-            self::$themeDir = dirname(dirname(dirname(dirname(__DIR__)))).'/theme';
+        if ( ! $themeDir) {
+            if ( ! self::$themeDir) {
+                self::$themeDir = dirname(dirname(dirname(dirname(__DIR__)))).'/theme';
+            }
+            $themeDir = self::$themeDir;
         }
 
-        $viewFilePath = self::$viewDir.'/'.$view.'.php';
+        $viewFilePath = $viewDir.'/'.$view.'.php';
         if (self::$theme) {
-            $themeFilePath = self::$themeDir.'/'.self::$theme.'/'.$view.'.php';
+            $themeFilePath = $themeDir.'/'.self::$theme.'/'.$view.'.php';
             if (file_exists($themeFilePath)) {
                 $viewFilePath = $themeFilePath;
             }
         }
         if (file_exists($viewFilePath)) {
             return $viewFilePath;
+        }
+
+        if (self::$appDir) {
+            return self::getViewFile($view, self::$appDir.'/view', self::$appDir.'/theme');
         }
         if (isset(self::$customGetViewFileFunc[1]) && method_exists(self::$customGetViewFileFunc[0], self::$customGetViewFileFunc[1])) {
             return call_user_func_array([self::$customGetViewFileFunc[0], self::$customGetViewFileFunc[1]], [$view]);
