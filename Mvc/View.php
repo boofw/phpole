@@ -5,7 +5,6 @@ class View
     static $viewDir = '';
     static $themeDir = '';
     static $appDir = '';
-    static $customGetViewFileFunc = [];
 
     static $theme = '';
     static $layout = '';
@@ -59,9 +58,6 @@ class View
 
         if (self::$appDir) {
             return self::getViewFile($view, self::$appDir.'/view', self::$appDir.'/theme');
-        }
-        if (isset(self::$customGetViewFileFunc[1]) && method_exists(self::$customGetViewFileFunc[0], self::$customGetViewFileFunc[1])) {
-            return call_user_func_array([self::$customGetViewFileFunc[0], self::$customGetViewFileFunc[1]], [$view]);
         }
         return null;
     }
