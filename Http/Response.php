@@ -6,6 +6,7 @@ class Response
 {
     static function redirect($uri = null, $withInput = false, $flashData = [])
     {
+        Session::reflash();
         if ($withInput) {
             Input::flash();
         }

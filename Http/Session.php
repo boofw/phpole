@@ -28,6 +28,14 @@ class Session
         self::put('_flash.'.$k, $v);
     }
 
+    static function reflash()
+    {
+        self::init();
+        foreach (self::$flash as $k => $v) {
+            self::flash($k, $v);
+        }
+    }
+
     static function has($k)
     {
         self::init();
