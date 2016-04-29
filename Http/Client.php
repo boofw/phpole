@@ -1,8 +1,11 @@
 <?php namespace Boofw\Phpole\Http;
 
+use ArrayObject;
+use Boofw\Phpole\Exception\AppException;
+
 class Client
 {
-    private static function curl($method, $url, $data = [], $header = [], $cookie = '')
+    private static function curl($method, $url, $data = [], $header = [], $cookie = '', $traceRedirect = true)
     {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -27,42 +30,51 @@ class Client
         }
 
         $ret =  curl_exec($ch);
+        $header = curl_getinfo($ch);
 
-        $chinfo = curl_getinfo($ch);
-        while ($chinfo['redirect_url']) {
-            curl_setopt($ch, CURLOPT_URL, $chinfo['redirect_url']);
-            $ret = curl_exec($ch);
-            $chinfo = curl_getinfo($ch);
+        if ($ret === false) {
+            throw new AppException(curl_error($ch), curl_errno($ch));
+        }
+
+        if ($traceRedirect) {
+            while ($header['redirect_url']) {
+                curl_setopt($ch, CURLOPT_URL, $header['redirect_url']);
+                $ret = curl_exec($ch);
+                $header = curl_getinfo($ch);
+            }
         }
 
         curl_close($ch);
 
-        return $ret;
+        return new ArrayObject(array(
+            'header' => $header,
+            'body' => $ret,
+        ), ArrayObject::ARRAY_AS_PROPS);
     }
 
-    static function get($url, $data = [], $header = [], $cookie = '')
+    static function get($url, $data = [], $header = [], $cookie = '', $traceRedirect = true)
     {
         if ($data) {
             $url .= '?'.http_build_query($data);
         }
-        return self::curl('GET', $url, [], $header, $cookie);
+        return self::curl('GET', $url, [], $header, $cookie, $traceRedirect);
     }
 
-    static function post($url, $data = [], $header = [], $cookie = '')
+    static function post($url, $data = [], $header = [], $cookie = '', $traceRedirect = true)
     {
-        return self::curl('POST', $url, $data, $header, $cookie);
+        return self::curl('POST', $url, $data, $header, $cookie, $traceRedirect);
     }
 
-    static function delete($url, $data = [], $header = [], $cookie = '')
+    static function delete($url, $data = [], $header = [], $cookie = '', $traceRedirect = true)
     {
-        return self::curl('DELETE', $url, $data, $header, $cookie);
+        return self::curl('DELETE', $url, $data, $header, $cookie, $traceRedirect);
     }
 
-    static function raw($url, $raw = '', $args = [], $header = [], $cookie = '')
+    static function raw($url, $raw = '', $args = [], $header = [], $cookie = '', $traceRedirect = true)
     {
         if ($args) {
             $url .= '?'.http_build_query($args);
         }
-        return self::curl('POSTRAW', $url, $raw, $header, $cookie);
+        return self::curl('POSTRAW', $url, $raw, $header, $cookie, $traceRedirect);
     }
 }
