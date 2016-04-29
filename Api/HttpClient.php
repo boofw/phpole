@@ -25,8 +25,8 @@ class HttpClient
             'PHPOLE-APPID: ' . self::$appId,
             'PHPOLE-TOKEN: ' . self::makeToken($post),
         ));
-        // print_r($r); var_dump($r);
-        return new ArrayObject(json_decode($r, 1), ArrayObject::ARRAY_AS_PROPS);
+
+        return new ArrayObject(json_decode($r->body, 1), ArrayObject::ARRAY_AS_PROPS);
     }
 
     static function makeToken($post)
