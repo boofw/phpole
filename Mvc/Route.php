@@ -11,9 +11,9 @@ class Route
     static function run()
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $root = dirname($_SERVER['PHP_SELF']);
-        if ($root !== DIRECTORY_SEPARATOR) {
-            $uri = substr($uri, strlen($root));
+        $appPath = config('app.path', dirname($_SERVER['PHP_SELF']));
+        if ($appPath !== DIRECTORY_SEPARATOR && str_contains($uri, $appPath)) {
+            $uri = substr($uri, strlen($appPath));
         }
         list($uri,) = explode('?', $uri);
 
