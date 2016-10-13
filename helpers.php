@@ -159,6 +159,24 @@ if ( ! function_exists('xml_to_array'))
     }
 }
 
+if ( ! function_exists('array_to_xml'))
+{
+    function array_to_xml($data)
+    {
+        $r = '';
+        foreach ($data as $k => $v) {
+            if (is_array($v)) {
+                $r .= "<$k>" . array_to_xml($v) . "</$k>";
+            } elseif (is_string($v)) {
+                $r .= "<$k><![CDATA[$v]]></$k>";
+            } else {
+                $r .= "<$k>$v</$k>";
+            }
+        }
+        return $r;
+    }
+}
+
 if ( ! function_exists('view_extend'))
 {
     function view_extend($layout)
@@ -178,6 +196,12 @@ if ( ! function_exists('session'))
 {
     function session($k, $default = '')
     {
+        if (is_array($k)) {
+            foreach ($k as $sk => $sv) {
+                \Boofw\Phpole\Http\Session::put($sk, $sv);
+            }
+            return null;
+        }
         return \Boofw\Phpole\Http\Session::get($k, $default);
     }
 }
@@ -194,6 +218,12 @@ if ( ! function_exists('config'))
 {
     function config($k, $default = '')
     {
+        if (is_array($k)) {
+            foreach ($k as $sk => $sv) {
+                \Boofw\Phpole\App\Config::set($sk, $sv);
+            }
+            return null;
+        }
         return \Boofw\Phpole\App\Config::get($k, $default);
     }
 }
@@ -202,6 +232,13 @@ if ( ! function_exists('runtime'))
 {
     function runtime($k, $default = '')
     {
+        $newKey = [];
+        if (is_array($k)) {
+            foreach ($k as $sk => $sv) {
+                $newKey['runtime.'.$sk] = $sv;
+            }
+            return config($newKey, $default);
+        }
         return config('runtime.'.$k, $default);
     }
 }
@@ -276,7 +313,19 @@ if ( ! function_exists('url'))
 {
     function url($uri = '', $withDomain = 0)
     {
-        $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', dirname($_SERVER['PHP_SELF'])), '/').'/'.ltrim($uri, '/');
+        $appPath = config('app.path', dirname($_SERVER['PHP_SELF']));
+        $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $appPath), '/').'/'.ltrim($uri, '/');
+        if ($withDomain) $url = 'http://'.$_SERVER['HTTP_HOST'].$url;
+        return $url;
+    }
+}
+
+if ( ! function_exists('assets'))
+{
+    function assets($uri = '', $withDomain = 0)
+    {
+        $appPath = config('app.assets', dirname($_SERVER['PHP_SELF']));
+        $url = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $appPath), '/').'/'.ltrim($uri, '/');
         if ($withDomain) $url = 'http://'.$_SERVER['HTTP_HOST'].$url;
         return $url;
     }
@@ -339,5 +388,13 @@ if ( ! function_exists('auth'))
             return array_get($user, $k);
         }
         return $user;
+    }
+}
+
+if (!function_exists('curl_file_create'))
+{
+    function curl_file_create($filename, $mimetype = '', $postname = '')
+    {
+        return "@$filename;filename=".($postname ?: basename($filename)).($mimetype ? ";type=$mimetype" : '');
     }
 }
